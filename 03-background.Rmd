@@ -10,11 +10,9 @@ In other words, MSTR is basically nothing but Bitcoin. Hence, if Bitcoin is bogu
 
 Here's the game: Assume that you have been retained by MSTR's auditor, KPMG, to assist their front-end audit risk assessment in preparation for auditing MSTR's financial statements for the year ended 12-31-2023.
 
-KPMG wants you to do a high-level reality check -- using Benford's Law -- on publicly available Bitcoin data. Do the available Bitcoin data suggest a genuine data-generating process? In other words, is the Bitcoin market real, or fake? Here's a link to the data on Kaggle. You'll need a free Kaggle account to download it.
+KPMG wants you to do a high-level reality check -- using Benford's Law -- on publicly available Bitcoin data. Do the available Bitcoin data suggest a genuine data-generating process? In other words, is the Bitcoin market real, or fake? We might start with the minute-by-minute [Bitcoin data repository on Kaggle](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data/data). You'll need a free Kaggle account to download it.
 
-<https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data/data>
-
-Assume, hypothetically, that these data cover the 2014-2023 interval. Thus, for purposes of the exercise, the 2021 Bitcoin data are from 2023. Using this data, create an R Notebook (.rmd format) structured around the Five Basic Steps outlined in Exhibit 2-1 of the AICPA Guide to Audit Data Analytics (ADAs) to perform the analysis and report the results. Here is a summary of the five basic steps:
+Assume, hypothetically, that these data cover the 2014-2023 interval. Thus, for purposes of the exercise, the 2021 Bitcoin data are from 2023. Using this data, create an R Notebook (.rmd format) structured around the Five Basic Steps outlined in Exhibit 2-1 of the [AICPA Guide to Audit Data Analytics](https://www.aicpa-cima.com/cpe-learning/publication/guide-to-audit-data-analytics) (ADAs) to perform the analysis and report the results. Here is a summary of the five basic steps:
 
 1.  Plan the ADA
 
@@ -30,9 +28,9 @@ Assume, hypothetically, that these data cover the 2014-2023 interval. Thus, for 
 
 In automotive terms, you can think of R and its "packages" as an analytical engine and drive train. R Studio is the dashboard and steering wheel – technically called an "integrated development environment" or "IDE" – that keeps data, R packages, scripts, and output visible, organized, moving forward, and instantly accessible to the auditor or data analyst.
 
-I am typing these words into an [Rmarkdown](https://rmarkdown.rstudio.com/) (.Rmd) file that I view or "monitor" in R Studio. Each chapter of the book is contained in a separate .Rmd file. The chapters are collated and rendered in .html, .pdf and other formats as a book using a package called [bookdown](https://bookdown.org/). I use [Github](https://github.com/kschulzke/AICPA-Power-Play) for version control. I control all of these activities through the R Studio IDE.
+I am typing these words into an [Rmarkdown](https://rmarkdown.rstudio.com/) (.Rmd) file that I view or "monitor" in R Studio. Each chapter of the book is contained in a separate .Rmd file. The chapters are collated and rendered in .html, .pdf and other formats as a book using a package called [bookdown](https://bookdown.org/). I use [Github](https://github.com/kschulzke/AICPA-Power-Play) for version control. I control these activities primarily through the R Studio IDE which, truth be told, has lots of GUI in it.
 
-R and R Studio can be accessed through a free or low-cost account at [Posit.Cloud](https://posit.cloud/). Alternatively, they can be [locally installed on a laptop](https://rstudio-education.github.io/hopr/starting.html). Consistent with its open-source roots, R is operating-system agnostic, working equally well on MacOS, Windows, and Linux. It's not currently feasible to use R Studio on a smartphone. Too much analytical power for such an "itty bitty living space"!
+R and R Studio can be accessed through a free or low-cost account at [Posit.Cloud](https://posit.cloud/). Alternatively, they can be [locally installed on a laptop](https://rstudio-education.github.io/hopr/starting.html). Consistent with its open-source roots, R is operating-system agnostic; it works equally well on MacOS, Windows, and Linux. It's not currently feasible to use R Studio on a smartphone. Too much analytical power for such an "itty bitty living space"!
 
 ## Resources
 
