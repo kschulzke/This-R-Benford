@@ -54,4 +54,6 @@ EuSpRIG backs up its warnings on risk with an [annual conference](https://euspri
 
 In one 2021 horror story archived by EuSpRIG, JP Morgan Chase was allegedly victimized in an Excel-spreadsheet-facilitated fraud. According to a [complaint filed in December 2022](https://content.fortune.com/wp-content/uploads/2023/01/Complaint-1.pdf), JPMC paid \$175 million for a start-up business, relying on 4.27 million purported college student accounts. JPMC alleges the accounts were fabricated by a "data science professor." The accounts data was delivered to JPMC in multiple, separate Excel files. If JPMC had acquired the data in a single file and performed some basic analytics on the entire data table in R or Python, they could have easily uncovered the alleged fraud.
 
+Another [recent story](https://www.the-race.com/formula-1/shocking-details-behind-painful-williams-f1-revolution/) involves the Williams Formula One racing team, who until 2024 were maintaining car parts inventories with Excel spreadsheets.
+
 One way to control spreadsheet risk is to shift sensitive data analytics work to more secure and robust analytical platforms like R and Python.

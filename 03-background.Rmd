@@ -50,7 +50,7 @@ Python -- [like Java](https://www.bmc.com/blogs/python-vs-java/) -- is a general
 
 ## Libraries or Packages
 
-Think of libraries (a.k.a. packages) as apps that extend the capabilities of the base R platform. Packages like [tidyverse](https://www.tidyverse.org/), [ggplot2](https://ggplot2-book.org/), and benford.analysis are to R what Word and Excel are to Microsoft Office, except that R packages are open source. Packages perform a myriad tasks, from data wrangling and text mining, to times series analysis and forecasting, to cluster analysis, linear regression, geocomputation, and elegant visualization, as well as management and publication of team-based analytical projects. All of these packages come with extensive documentation and the most frequently used offer comprehensive [cheatsheets](https://posit.co/resources/cheatsheets/).
+Think of libraries (a.k.a. packages) as apps that extend the base R platform. Packages like [tidyverse](https://www.tidyverse.org/), [ggplot2](https://ggplot2-book.org/), and benford.analysis are to R what Word and Excel are to Microsoft Office, except that R packages are open source. Packages perform a myriad tasks, from data wrangling and text mining, to times series analysis and forecasting, to cluster analysis, linear regression, geocomputation, and elegant visualization, as well as management and publication of team-based analytical projects. All of these packages come with extensive documentation and the most frequently used offer comprehensive [cheatsheets](https://posit.co/resources/cheatsheets/).
 
 ## Data
 
