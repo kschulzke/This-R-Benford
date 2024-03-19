@@ -14,7 +14,7 @@ KPMG wants you to do a high-level reality check -- using Benford's Law -- on pub
 
 <https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data/data>
 
-Assume , hypothetically, that these data cover the 2014-2023 interval. Thus, for purposes of the exercise, the 2021 Bitcoin data are from 2023. Using this data, create an R Notebook (.rmd format) structured around the Five Basic Steps outlined in Exhibit 2-1 of the AICPA Guide to Audit Data Analytics (ADAs) to perform the analysis and report the results. Here is a summary of the five basic steps:
+Assume, hypothetically, that these data cover the 2014-2023 interval. Thus, for purposes of the exercise, the 2021 Bitcoin data are from 2023. Using this data, create an R Notebook (.rmd format) structured around the Five Basic Steps outlined in Exhibit 2-1 of the AICPA Guide to Audit Data Analytics (ADAs) to perform the analysis and report the results. Here is a summary of the five basic steps:
 
 1.  Plan the ADA
 
