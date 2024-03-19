@@ -20,7 +20,7 @@ To be fair, "Elsa" was comparing R to Excel, but would be the point of using SQL
 
 ## Deep learning
 
-Just as important as its analytical power, coding grows the mind the coder – it builds mental power. Beyond this, building good code fosters mental discipline and deep knowledge of the data. Coding facilitates intimate understanding of whatever it is that you are trying to model. As one of my MAcc analytics students wrote early this semester while working through this very exercise (my emphasis):
+Just as important as its analytical power, coding grows the mind the coder – it builds mental power. Beyond this, building good code fosters mental discipline and deep knowledge of the data. Coding facilitates intimate understanding of the data, data generating process, and the data model. If accounting is the language of business, coding is the language of data. One auditing analytics student, in the midst of working through this very exercise, commented as follows (my emphasis):
 
 > I learned how to use the My Law principles to evaluate MicroStrategy. After reading the article about My Law, (I won’t lie) I was still confused regarding the concept, but *fortunately, I know how to read R*. What I mean by that is, maybe I didn’t know what exactly what My Law was before our current project, but *since I know what I’m doing in R, I was able to get a grip on the My Law concept by reading my code from the project* ... After doing the code myself, I saw the big picture version of My Law ... I certainly won’t say I’m an expert, but I know it a lot better than I did before this week.
 
@@ -30,7 +30,7 @@ What does it do to our students and their future work product, if they miss out 
 
 ## About Excel
 
-Excel is especially problematic because of its popularity, [perceived infallibility](https://arxiv.org/abs/1801.10249), lack of data integrity safeguards, and lack of transparency (think hidden formulas). Despite all this, Excel is everywhere. For many, it's the go-to tool for data analysis. Yet, the ease with which Excel cell values and formulas can be altered and the relative invisibility of the alterations present enormous control risks.
+Excel is especially problematic because of its popularity, [perceived infallibility](https://arxiv.org/abs/1801.10249), lack of data integrity safeguards, artificial capacity constraints, and lack of transparency (think hidden formulas). Despite all this, Excel is everywhere. For many, it's the go-to tool for data analysis. Yet, the ease with which Excel cell values and formulas can be altered and the relative invisibility of the alterations present enormous control risks.
 
 ### EuSpRIG
 
