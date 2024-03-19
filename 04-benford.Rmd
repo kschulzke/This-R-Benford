@@ -486,21 +486,20 @@ The My Law concept was first articulated in print by Mark Nigrini in 2012. The i
 
 In the current exercise, we'll use Kaggle's BTC volumes numbers for the period 2018-2020 to establish the My Law distribution benchmark. We'll then compare 2021 volume numbers to the benchmark, calculate a MAD statistic and discuss the implications.
 
-### Run benford x 2
+### Benford x 2
 
-The first step is to use the benford function to create...
+Similar to the Benford analysis above, our first step is to use `benford` to create the necessary Benford objects for 2018-2020 and 2021. We'll then use information contained in these objects to create a separate MyLaw object. 
 
 ```{r}
 bfd.18_20 <- benford(BTC_18_20$Vol_BTC)
 bfd.21 <- benford(BTC_21$Vol_BTC)
-plot(bfd.18_20)
-plot(bfd.21)
-
 ```
 
 ### Create MyLaw object
 
-MyLaw is a table that combines data from bfd.18_20 and bfd.21.
+MyLaw contains four columns: first-digit pairs,from bfd.18_20 and bfd.21.
+
+
 
 ```{r}
 MyLaw <- data.frame(as.character(bfd.18_20$bfd$digits), bfd.18_20$bfd$data.dist, bfd.21$bfd$data.dist, bfd.21$bfd$benford.dist)
