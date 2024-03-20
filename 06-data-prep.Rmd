@@ -22,7 +22,7 @@ Preparation tasks will include importing the data into R Studio, performing some
 
 ### Import
 
-After downloading the [Bitcoin Historical Data](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data) from Kaggle, we import it into R Studio using the `data.table` package [@R-data.table] `fread` function, which works much faster on tables containing millions of rows. We could use the `dplyr` package [@R-dplyr] `read_csv` function, which still effective but considerably slower. We'll assign the data to an object called BTC_master.
+After downloading the [Bitcoin Historical Data](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data) from Kaggle, we import it into R Studio using the `data.table` package[@data.table] `fread` function, which works much faster on tables containing millions of rows. We could use the `dplyr` package[@dplyr] `read_csv` function, which still effective but considerably slower. We'll assign the data to an object called BTC_master.
 
 In the script that follows, the `<-` symbol is the "assignment operator," which assigns the contents of BTC_data.csv to the R object "BTC_master". We use `tic` and `toc` to measure execution speed, which – for almost 4.9 million rows – approximates 0.25 seconds using `fread`. The speed varies with the hardware (e.g., RAM and CPU specs) and other demands on it.
 
@@ -48,7 +48,7 @@ head(BTC_master)
 
 The SQL equivalents are `SELECT` (with `LIMIT`) and `FETCH`, though they require more keystrokes than `head`. Other options are explained at [W3Schools](https://www.w3schools.com/sql/sql_top.asp).
 
-Note that R is case-sensitive, while SQL is not. However, it is customary in writing SQL to capitalize keywords or functions, e.g., `SELECT`. We'll invoke SQL through the `sqldf` function of the `sqldf` package[@R-sqldf]. Setting the SQL code apart from the `sqldf` wrapper is a stylistic choice that focuses attention on the SQL itself.
+Note that R is case-sensitive, while SQL is not. However, it is customary in writing SQL to capitalize keywords or functions, e.g., `SELECT`. We'll invoke SQL through the `sqldf` function of the `sqldf` package[@sqldf]. Setting the SQL code apart from the `sqldf` wrapper is a stylistic choice that focuses attention on the SQL itself.
 
 ```{r}
 
@@ -233,7 +233,7 @@ Timestamps
 
 This confirms zero duplicated Timestamp values, as the count, 4857377, equals the number of rows in BTC_master.
 
-How many values should we find in the table, assuming a row for every minute over the entire time period covered? Is BTC_master missing any minutes? Let's use R to find out. First, we'll calculate the number of minutes between the first and last rows in the table. We'll apply the `lubridate` `time_length` function to the posixt column because it states dates and times in Unix format. Date won't work because it contains only the dates.
+How many values should we find in the table, assuming a row for every minute over the entire time period covered? Is BTC_master missing any minutes? Let's use R to find out. First, we'll calculate the number of minutes between the first and last rows in the table. We'll apply the `lubridate` [@lubridate]`time_length` function to the posixt column because it states dates and times in Unix format. Date won't work because it contains only the dates.
 
 ```{r}
 Minutes <- time_length(interval(min(BTC_master$posixt), max(BTC_master$posixt)), "minute")
@@ -304,7 +304,7 @@ toc()
 
 In SQL? For another day!
 
-But let's use the combined table in some visualizations. We can start with overlaid histograms.
+But let's use the combined table in some visualizations. We can start with overlaid histograms, using a log10 transformation to make the distributions standout regardless of scale.
 
 ```{r message=FALSE, warning=FALSE}
 
@@ -318,7 +318,7 @@ Vol_hist
 
 ```
 
-Not exactly overlaid, are they? This is because the Kaggle and Yahoo "volume" distributions are so dissimilar. Hmm.
+Not exactly overlaid, are they? This is because the Kaggle and Yahoo "volume" distributions are so dissimilar. Hmm. This raises questions about the reliability and relevance of the data. Why are the data sets so different? Here's a slightly different coding approach, separately the two histograms into two separate plots.
 
 ```{r message=FALSE, warning=FALSE}
 library(patchwork)
@@ -339,7 +339,7 @@ Yah_hist + Kag_hist
  
 ```
 
-Let's try a couple of additional plots. First, overlaid line plots.
+Let's try a couple of additional plots. First, a line plot.
 
 ```{r}
 
