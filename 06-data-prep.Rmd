@@ -4,7 +4,7 @@ This chapter walks through the Benford's Analysis process, from importing the da
 
 ## Load libraries
 
-To get things done in R, we must first load libraries (a.k.a. packages). These act like apps or tools for doing specific tasks like data import, cleansing, transformation, and visualization. We'll include `tictoc` [@R-tictoc] to compare process times for different scripting options.
+To get things done in R, we must first load libraries (a.k.a. packages). These act like apps or tools for doing specific tasks like data import, cleansing, transformation, and visualization. We'll include `tictoc` [@tictoc] to compare process times for different scripting options.
 
 This chunk loads the libraries. But wait! Before libraries can be *loaded* into a project using the `library` function, they must first be [installed](https://rstudio-education.github.io/hopr/packages.html#packages-1) with your R instance. This code chunk assumes that you've already installed these packages.
 

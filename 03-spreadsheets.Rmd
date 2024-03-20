@@ -26,9 +26,9 @@ In one 2021 Excel story archived by EuSpRIG, JP Morgan Chase was allegedly victi
 
 ## Excel Formula One
 
-Racing, that is. This crazy Excel [story](https://www.the-race.com/formula-1/shocking-details-behind-painful-williams-f1-revolution/) arrived in my email inbox courtesy of [The Race](https://www.the-race.com "The Race") and the EuSpRIG discussion list. The story involves the [Williams Formula One](https://www.formula1.com/en/teams/Williams.html "Williams F1") racing team, who until 2024 were managing race car "builds" – requiring thousands of parts – with Excel.
+Racing, that is. This crazy Excel [story](https://www.the-race.com/formula-1/shocking-details-behind-painful-williams-f1-revolution/) arrived in my email inbox courtesy of [The Race](https://www.the-race.com "The Race") and the EuSpRIG discussion list. The story involves the [Williams Formula One](https://www.formula1.com/en/teams/Williams.html "Williams F1") racing team, who until 2024 were managing race car "builds" – requiring thousands of parts – with Excel. The pic (Source: The Race) is linked to a related YouTube video report.
 
-![](images/clipboard-910936519.png){width="342"}
+[![](images/clipboard-910936519.png){width="342"}](https://www.youtube.com/watch?v=WazUi6K4W6w)
 
 Author Scott Mitchell-Malms tells it best:
 
