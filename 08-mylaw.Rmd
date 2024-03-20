@@ -1,8 +1,8 @@
 # My Law analysis
 
-The My Law concept was first articulated in print by Mark Nigrini in 2012. The idea is that individual organizations may develop, in their data sets, first-digits patterns that do not conform to Benford's Law but are internally consistent over time. Thus, these proprietary digital patterns might be used as a "My Law" in place of Benford's Law. Significant departures from My Law might call for further investigation.[^07-mylaw-1]
+The My Law concept was first articulated in print by Mark Nigrini in 2012. The idea is that individual organizations may develop, in their data sets, first-digits patterns that do not conform to Benford's Law but are internally consistent over time. Thus, these proprietary digital patterns might be used as a "My Law" in place of Benford's Law. Significant departures from My Law might call for further investigation.[^08-mylaw-1]
 
-[^07-mylaw-1]: Mark Nigrini, Benford's Law: Applications for Forensic Accounting, Auditing, and Fraud Detection (2012), pp. 295-300.
+[^08-mylaw-1]: Mark Nigrini, Benford's Law: Applications for Forensic Accounting, Auditing, and Fraud Detection (2012), pp. 295-300.
 
 In the current exercise, we'll use Kaggle's BTC volumes numbers for the period 2018-2020 to establish the My Law distribution benchmark. We'll then compare 2021 volume numbers to the benchmark, calculate a MAD statistic and discuss the implications.
 
@@ -49,9 +49,9 @@ MyLaw$Diffs <- MyLaw$Vol_21_actual - MyLaw$MyLaw
 
 ## My Law Plots
 
-The first plot shows -- for minute-by-minute transaction volumes -- the actual distribution of first-two digits in the Kaggle data (green histogram); the Benford's Law predicted distribution (red dashed line); and the My Law distribution (blue dashed line) derived from Kaggle data for 2018-2020.[^07-mylaw-2]
+The first plot shows -- for minute-by-minute transaction volumes -- the actual distribution of first-two digits in the Kaggle data (green histogram); the Benford's Law predicted distribution (red dashed line); and the My Law distribution (blue dashed line) derived from Kaggle data for 2018-2020.[^08-mylaw-2]
 
-[^07-mylaw-2]: Michael Clark's Benford's ADA analysis submission in ACCT 7530 contributed some snippets and inspired others used in the My Law analysis.
+[^08-mylaw-2]: Michael Clark's Benford's ADA analysis submission in ACCT 7530 contributed some snippets and inspired others used in the My Law analysis.
 
 ```{r MyLaw plots, fig.align='center', message=FALSE, warning=FALSE}
 
@@ -68,7 +68,7 @@ MyLawPlot +
 
 ## Plot diffs by pairs
 
-Here, we plot as a bar chart the *differences* between the actual and My Law frequencies of each pair of first digits. The "fill" color is implemented with `scale_fill_gradient`, with blue as the low end and red as the high.    
+Here, we plot as a bar chart the *differences* between the actual and My Law frequencies of each pair of first digits. The "fill" color is implemented with `scale_fill_gradient`, with blue as the low end and red as the high.
 
 ```{r Plot MyLaw diffs, fig.align='center', message=FALSE, warning=FALSE}
 
@@ -93,4 +93,4 @@ MyLawMAD
 
 ## My Law Conclusion
 
-The apparent conformity to My Law justifies little concern over potential number manipulation, unless we assume that the data were deliberately fabricated to conform to My Law frequencies. There is no evidence to suggest any such fabrication.  
+The apparent conformity to My Law justifies little concern over potential number manipulation, unless we assume that the data were deliberately fabricated to conform to My Law frequencies. There is no evidence to suggest any such fabrication.

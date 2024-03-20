@@ -2,7 +2,7 @@
 
 ## Create Benford object
 
-We use the [benford.analysis package](https://www.rdocumentation.org/packages/benford.analysis/versions/0.1.5), running its `benford` function against the BTC_master data, producing a Benford object, which we'll call "bfd.mast". From this object, we will extract information to perform a Benford analysis.
+We use the [benford.analysis package](https://www.rdocumentation.org/packages/benford.analysis/versions/0.1.5), running its `benford` function against the BTC_master data, producing a Benford object, which we'll call `bfd.mast`. From `bfd.mast`, we will extract information to perform a Benford analysis on the `Vol_BTC` column only. The thinking is that volumes are an indicator of market liquidity and, therefore, a measure of the reality of Bitcoin and, therefore, the viability of MSTR as a going concern.
 
 ```{r}
 
@@ -13,7 +13,7 @@ bfd.mast
 
 ## Interpret `benford` output
 
-This output presents a lot to absorb, but we'll keep it simple. One statistic to note is the MAD (mean absolute deviation). Based on the significance thresholds proposed by Nigrini (2012), which are programmed into the benford.analysis package[@benford.analysis], the MAD of 0.001091855 suggests little overall deviation from Benford's Law. However, the information value of MAD and the other statistics presented in the `benford` output is open to question for reasons explained by Barney & Schulzke (2016) and Mark Nigrini (2017). Let's take a look at the plots, which reveal some interesting patterns.
+This output presents a lot to absorb, but we'll keep it simple. One statistic to note is the MAD (mean absolute deviation). Based on the significance thresholds proposed by Nigrini (2012), which are programmed into the benford.analysis package[@benford.analysis], the MAD of 0.001091855 suggests little overall deviation from Benford's Law. However, the information value of MAD and the other statistics presented in the `benford` output is open to question for reasons explained in Chapter \@ref(context). Let's take a look at the plots, which reveal some interesting patterns.
 
 ## Benford plots
 
@@ -23,7 +23,9 @@ plot(bfd.mast)
 
 ```
 
-We'll comment here on the Digits Distribution and Summation Distribution plots. The Second Order plot is of questionable value because "in general, there is no relationship between accounting data and the differences between the ordered/ranked values in a data set."[^07-benford-1]
+The Digits Distribution plots shows a few spikes in the 10s, 20s, and 50s. These deserve a closer look even though the MAD rating is "Close Conformity". The Summation Distribution and Difference plots, showing big deviations from expectations across the pairs spectrum, supports detailed testing of transactions, perhaps selected through PPS sampling weighted by the pair sums.
+
+The remaing plots are of limited usefulness. The Second Order plot, especially, is questionable because "in general, there is no relationship between accounting data and the differences between the ordered/ranked values in a data set."[^07-benford-1]
 
 [^07-benford-1]: Mark Nigrini, *Forensic Analytics: Methods and Techniques for Forensic Accounting Investigations*, 2e (2020), p. 92.
 
@@ -43,7 +45,7 @@ head(suspectsTable(bfd.mast),10)
 
 ### Get suspects
 
-Given that pairs 10 and 20 are the top two suspects, `getSuspects` with `how.many` = 2 retrieves all *observations*, sorted by ascending Timestamp, that begin with 10 or 20. The `head` function retrieves only the first six observations.
+Given that pairs 10 and 20 are the top two suspects, `getSuspects` with `how.many=2` retrieves all *observations*, sorted by ascending Timestamp, that begin with 10 or 20. The `head` function retrieves only the first six observations.
 
 ```{r Suspect obs}
 
@@ -83,15 +85,15 @@ head(digits_50_and_99)
 
 A significant drawback of Benford's Law is the lack of objectively justifiable theoretical or practical measures of conformity. What is a material departure from Benford's expectations? While Mark Nigrini has proposed some broad thresholds, they remain without "hard" stastical or theoretical underpinnings.
 
-One of the greatest challenges is that reliable Benford's Law readings are obtainable only with Ns (sample sizes) in the thousands. And with Ns so large, traditional statistics applied to MAD values – e.g., Z scores, Chi-square, and Kolmogorov-Smirnov – throw false positives because of excess power.[^07-benford-2] In fact, MAD scores and sample size are so strongly correlated that the linear relationship between them can be used to estimate "expected MAD" or EMAD which is attributable to chance and is a function of N as stated in Equation 1:
+One of the greatest challenges is that reliable Benford's Law readings are obtainable only with Ns (sample sizes) in the thousands. And with Ns so large, traditional statistics applied to MAD values – e.g., Z scores, Chi-square, and Kolmogorov-Smirnov – throw false positives because of excess power.[^07-benford-2] In fact, MAD scores and sample size are so strongly correlated that the linear relationship between them can be used to estimate "expected MAD" or EMAD which is attributable to chance and is a function of N as stated in Equation 2:
 
 [^07-benford-2]: See Bradley Barney & Kurt Schulzke (2016), Moderating ‘‘Cry Wolf’’ Events with Excess MAD in Benford’s Law Research and Practice, A66, A70. *J. Forensic Accounting Research*; Vol. 1 No. 1, DOI: 10.2308/jfar-51622; Mark Nigrini (2017), Audit Sampling Using Benford’s Law: A Review of the Literature with Some New Perspectives, *J. Emerging Technologies in Accounting*, Vol. 14 No. 2, pp. 30-31, 40. DOI: 10.2308/jeta-51783.
 
-`Equation 1` EMAD = 1/sqrt(158.8\*n)
+`Equation 2` EMAD = 1/sqrt(158.8\*n)
 
-EMAD gives rise to the concept of "excess" MAD, or MAD in excess of MAD attributable to chance. Any actual MAD not in excess of EMAD is "expected" and therefore, per se, justifies no suspicion of number manipulation. Excess MAD is as given in Equation 2.
+EMAD gives rise to the concept of "excess" MAD, or MAD in excess of MAD attributable to chance. Any actual MAD not in excess of EMAD is "expected" and therefore, per se, justifies no suspicion of number manipulation. Excess MAD is as given in Equation 3.
 
-`Equation 2` ExcessMAD = Actual MAD - EMAD
+`Equation 3` ExcessMAD = Actual MAD - EMAD
 
 These numbers are calculated and reported in the following chunk.
 
@@ -109,4 +111,4 @@ Unfortunately, as with MAD itself, how much Excess MAD is "too much" is still sp
 
 ## Benford's Law Conclusions
 
-Given large enough Ns, Benford's Law can be a useful high-level data validity test. Notable departures from Benford's expectation Visual assessment of the Benford's Law plots can highlight first-digit sequences for further sampling. However, in most audit situations, it would be impractical to apply tests of details to all observations that begin with a particular pair of digits. Aggregate measures of Benford's Law conformity are of little practical utility.
+Our Benford analysis here has focused exclusively on Bitcoin transaction volumes, as presented in the Kaggle data set.

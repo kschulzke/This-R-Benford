@@ -28,8 +28,10 @@ Just as important as its analytical power, coding grows the mind the coder – i
 
 > I learned how to use the My Law principles to evaluate MicroStrategy. After reading the article about My Law, (I won’t lie) I was still confused regarding the concept, but *fortunately, I know how to read R*. What I mean by that is, maybe I didn’t know what exactly what My Law was before our current project, but *since I know what I’m doing in R, I was able to get a grip on the My Law concept by reading my code from the project* ... After doing the code myself, I saw the big picture version of My Law ... I certainly won’t say I’m an expert, but I know it a lot better than I did before this week.
 
-"Since I know what I'm doing in R, I was able to get a grip ... on the concept by reading my code..."
+*Got a grip on the concept by reading her code.*
 
-That really says it all!
+This brings to mind a quote attributed to E.M. Forster and several others:
 
-What does it do to our students and their future work product, if they miss out on this kind of mental weightlifting? How much more effective can they be in the information business – which is what accounting really is – when they deeply understand the data?
+"How can I know what I think until I hear what I say?"
+
+Coding forces us to learn what we think about the data. This kind of mental weightlifting is good for the mind, the soul, and the accounting profession. Accounting, ultimately, boils down to creating information – in information theory terms, reducing uncertainty or "information entropy." It's not easy but it can be very rewarding.

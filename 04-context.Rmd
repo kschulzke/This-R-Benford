@@ -30,7 +30,7 @@ We'll focus primarily on steps 2-3, though we won't explicitly identify each ste
 
 The primary ADA chosen for this audit test is a suite of Benford's Law tests instantiated in the R benford.analysis package [@benford.analysis]. Test outputs include statistics, tables, and visualizations. Ancillary ADAs include a "summation test," as well as data validation queries and visualizations executed using SQL and various R packages (e.g., dplyr [@tidyverse], ggplot2 [@ggplot2]).
 
-Equation 1. p(first two digits = k) = log10(1 + 1/k)
+`Equation 1` p(first two digits = k) = log10(1 + 1/k)
 
 For example, the expected frequency of 41 in first position approximates 0.01046543:
 
@@ -58,6 +58,6 @@ BfdPlot
 
 ```
 
-Notable departures from Benford's expectations can be, though not always are, a signal of data manipulation or simply artificial constraints that are part of the data generating process.
+Notable departures from Benford's expectations can be, though not always are, a signal of data manipulation or artificial constraints that are part of the data generating process.
 
-Visual assessment of the Benford's Law plots can highlight first-digit sequences for further sampling. However, in most audit situations, it would be impractical to apply tests of details to all observations that begin with a particular pair of digits. Aggregate statistical measures of Benford's Law conformity – like mean absolute deviation or "MAD" – are of limited practical utility but are nevertheless frequently quoted.
+Visual assessment of the Benford's Law plots can highlight first-digit sequences for further sampling. However, in most audit situations, it would be impractical to apply tests of details to all observations that begin with a particular pair of digits. Frequently quoted aggregate statistical measures of Benford's Law conformity – like mean absolute deviation or "MAD" – are of limited practical utility [@barney2016], but much can be learned by drilling down into the details [@nigrini2017].
