@@ -2,21 +2,25 @@
 
 ## I wish I could use R!
 
-Why should accounting professors and professionals learn programming languages like SQL, and R or Python? Why not just stick with GUI[^02-motivation-1] platforms like Excel, Tableau, Idea, Power BI, MS Access, or Alteryx? For one thing, data analytics in R – once you get the hang of it – delivers way more endorphins than any GUI ever could. One recent auditing student wrote:
+Why should accounting professors and professionals learn programming languages like SQL, and R or Python? Why not just stick with GUI[^02-motivation-1] platforms like Excel, Tableau, Idea, Power BI, MS Access, or Alteryx?
 
 [^02-motivation-1]: GUI stands for "Graphical User Interface." Computer or phone apps that acquire user input primarily through "point and click" interaction with graphical images (like icons) are GUI platforms. Excel, Word, Access, and Alteryx are GUIs.
 
+For one thing, data analytics in R – once you get the hang of it – delivers way more endorphins than any GUI ever could. One recent auditing student wrote:
+
 > R Studio, to put it simply, is bad to the freaking bone. I am still trying to figure out many of its capabilities. R Studio is an amazing tool that can and should be used by any company to handle large amounts of data. I've had to use many different types of data software. However, I've never used one as powerful, fast, and capable... If I can just learn how to use it more, I believe I will be able to use it especially well within the charity [where I serve as a board member].
 
-That said, SQL is undeniably the *lingua franca* of relational databases and, therefore, of accounting information systems. As such, it is fair to say that basic fluency in SQL is essential to a complete accounting education. No SQL, no data fluency. No data fluency, no accounting profession.
+That said, SQL is undeniably the *lingua franca* of relational databases and, therefore, of accounting information systems. As such, it is fair to say that basic fluency in SQL is essential to a complete accounting education. No SQL, no data fluency. No data fluency, no accounting profession. Every financial statement auditor should be able to at least read SQL.
 
 ## Speed, Reliability, Agility
 
-But while SQL is necessary for data fluency, it's far from sufficient. SQL is a powerful database management and query machine. Yet, it lacks serious visualization chops and many advanced analytical tools. For these, who do you call? The GUIs or R and Python? Here's what one recent student had to say at the end of the first week of the Spring semester (my emphasis):
+But while SQL is necessary for data fluency, it's far from sufficient. SQL is a powerful database management and query machine. Yet, it lacks serious visualization chops and many advanced analytical tools. For these, who do you call? The GUIs or R and Python? Let's hear from a recent MAcc student, writing at the end of the first week of a Spring semester, after doing a deep dive into R the previous Fall (my emphasis):
 
-> I am very excited to get back into the groove of things and expand my depth of R even further. Being I work at a small firm, I am exposed to several different aspects of accounting: tax, audit, write-up work, etc. Over the past month, I have been working on an ... audit that has required me to dig through boxes of invoices as well as huge spreadsheets. This specific [client] is extremely efficient in their work, but they are “old and set in their ways” and could use many updates in the technology and software department. Last week my manager asked me to take a rather large spreadsheet with payroll data and sort it based on several different factors. I was able to complete the task with no problem; however, i*t took a good chunk of time* to complete, and there was *much room for error*. *R scared the daylights out of me at the beginning of the fall semester, but the new [Elsa - name changed!] silently whispered “I wish I could use R for this” when she gave it to me*.
+> I am very excited to get back into the groove of things and expand my depth of R even further. Being I work at a small firm, I am exposed to several different aspects of accounting: tax, audit, write-up work, etc. Over the past month, I have been working on an ... audit that has required me to dig through boxes of invoices as well as huge spreadsheets. This specific [client] is extremely efficient in their work, but they are “old and set in their ways” and could use many updates in the technology and software department. Last week my manager asked me to take a rather large spreadsheet with payroll data and sort it based on several different factors. I was able to complete the task with no problem; however, *it took a good chunk of time* to complete, and there was *much room for error*. *R scared the daylights out of me at the beginning of the fall semester, but the new [Elsa - name changed!] silently whispered “I wish I could use R for this” when she gave it to me*.
 
-To be fair, "Elsa" was comparing R to Excel, but would be the point of using SQL if you have R? In many settings, R and Python offer more flexibility, agility, speed (in design and execution), data capacity, better audit trail documentation, and lower cost – or some subset thereof – than the GUIs. GUIs can be easier to learn, but not always. Every Alteryx icon (or collection of icons) represents some R or Python function. Learning Alteryx means learning icons AND the underlying function. Meanwhile, the SQL-R-Python trio require only learning the functions *and* they put full analytical power and flexibility at the analyst's finger tips.
+To be fair, "Elsa" was comparing R to Excel. But even so, what would be the point of using SQL if you can use R? In many settings, R and Python offer a better mix of flexibility, agility, speed (in design and execution), data capacity, better audit trail documentation, and lower cost – or some subset thereof – than SQL *or* the GUIs.
+
+GUIs can be easier to learn, but not always. Every Alteryx icon (or collection of icons) represents some R or Python function. Learning Alteryx means learning icons AND the underlying function. Meanwhile, the SQL-R-Python trio require only learning the functions *and* they put full analytical power and flexibility at the analyst's finger tips.
 
 ## Deep learning
 
@@ -24,36 +28,8 @@ Just as important as its analytical power, coding grows the mind the coder – i
 
 > I learned how to use the My Law principles to evaluate MicroStrategy. After reading the article about My Law, (I won’t lie) I was still confused regarding the concept, but *fortunately, I know how to read R*. What I mean by that is, maybe I didn’t know what exactly what My Law was before our current project, but *since I know what I’m doing in R, I was able to get a grip on the My Law concept by reading my code from the project* ... After doing the code myself, I saw the big picture version of My Law ... I certainly won’t say I’m an expert, but I know it a lot better than I did before this week.
 
-"Since I know what I'm doing in R, I was able to get a grip ... on the concept by reading my code..." That really says it all!
+"Since I know what I'm doing in R, I was able to get a grip ... on the concept by reading my code..."
+
+That really says it all!
 
 What does it do to our students and their future work product, if they miss out on this mental weightlifting? How much more effective are they in the information business – which is what accounting really is – when they have the power to so deeply understand the data?
-
-## About Excel
-
-Excel is especially problematic because of its popularity, [perceived infallibility](https://arxiv.org/abs/1801.10249), lack of data integrity safeguards, artificial capacity constraints, and lack of transparency (think hidden formulas). Despite all this, Excel is everywhere. For many, it's the go-to tool for data analysis. Yet, the ease with which Excel cell values and formulas can be altered and the relative invisibility of the alterations present enormous control risks.
-
-### EuSpRIG
-
-These risks motivated the creation of the [European Spreadsheet Risk Interest Group](https://eusprig.org/about/about-eusprig/) (EuSpRIG), whose mission is to "offer Directors, Managers and Professionals in all disciplines, the world’s only independent, authoritative & comprehensive web based information describing the current state of the art in Spreadsheet Risk Management." EuSpRIG's [website states](https://eusprig.org/about/about-eusprig/):
-
-> Research has repeatedly shown that an alarming proportion of corporate spreadsheet models are not tested or controlled to the extent necessary to meet these obligations. Uncontrolled and untested spreadsheet models pose significant business risks, including:
->
-> -   Lost Revenue, Profits, Cash, Assets & Tax
->
-> -   Mispricing and poor decision making due to prevalent but undetected errors
->
-> -   Fraud due to malicious tampering
->
-> -   Systemic financial failure, due to overdependence
->
-> Furthermore, an inability to show that spreadsheet-based business information has been subject to procedures designed to ensure it is reliable, is in itself a failure of fiduciary and regulatory compliance.
-
-EuSpRIG backs up its warnings on risk with an [annual conference](https://eusprig.org/conferences/eusprig-annual-conference/), [conference proceedings and paper archive](https://eusprig.org/conferences/conference-papers-and-abstracts/), ["horror stories" archive](https://eusprig.org/research-info/horror-stories/), and [discussion group](https://eusprig.org/research-info/discussion-group/).
-
-### Horror Story
-
-In one 2021 horror story archived by EuSpRIG, JP Morgan Chase was allegedly victimized in an Excel-spreadsheet-facilitated fraud. According to a [complaint filed in December 2022](https://content.fortune.com/wp-content/uploads/2023/01/Complaint-1.pdf), JPMC paid \$175 million for a start-up business, relying on 4.27 million purported college student accounts. JPMC alleges the accounts were fabricated by a "data science professor." The accounts data was delivered to JPMC in multiple, separate Excel files. If JPMC had acquired the data in a single file and performed some basic analytics on the entire data table in R or Python, they could have easily uncovered the alleged fraud.
-
-Another [recent story](https://www.the-race.com/formula-1/shocking-details-behind-painful-williams-f1-revolution/) involves the Williams Formula One racing team, who until 2024 were maintaining car parts inventories with Excel spreadsheets.
-
-One way to control spreadsheet risk is to shift sensitive data analytics work to more secure and robust analytical platforms like R and Python.

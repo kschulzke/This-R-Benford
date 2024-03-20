@@ -1,0 +1,45 @@
+# About spreadsheets
+
+Spreadsheets (e.g., Excel, Google Sheets) have done amazing things and will continue to do so. However, they are problematic for several reasons. These include [perceived infallibility](https://arxiv.org/abs/1801.10249), lack of data integrity, lack of scalability (i.e., row/column/character constraints), and lack of transparency (think hidden formulas). Despite these drawbacks, spreadsheets are everywhere. For many, they are the go-to remedy for "what ails ya". Yet, the ease with which spreasheet cell values and formulas can be altered, the relative invisibility of the alterations, and even the capacity constraints (see JP Morgan Chase, below) present enormous control risks. Because of spreadsheets' popularity, one thing they clearly do "at scale" is multiply risk.
+
+## EuSpRIG
+
+These risks motivated the creation of the [European Spreadsheet Risk Interest Group](https://eusprig.org/about/about-eusprig/) (EuSpRIG), whose mission is to "offer Directors, Managers and Professionals in all disciplines, the world’s only independent, authoritative & comprehensive web based information describing the current state of the art in Spreadsheet Risk Management." EuSpRIG's [website states](https://eusprig.org/about/about-eusprig/):
+
+> Research has repeatedly shown that an alarming proportion of corporate spreadsheet models are not tested or controlled to the extent necessary to meet these obligations. Uncontrolled and untested spreadsheet models pose significant business risks, including:
+>
+> -   Lost Revenue, Profits, Cash, Assets & Tax
+>
+> -   Mispricing and poor decision making due to prevalent but undetected errors
+>
+> -   Fraud due to malicious tampering
+>
+> -   Systemic financial failure, due to overdependence
+>
+> Furthermore, an inability to show that spreadsheet-based business information has been subject to procedures designed to ensure it is reliable, is in itself a failure of fiduciary and regulatory compliance.
+
+EuSpRIG backs up its warnings on risk with an [annual conference](https://eusprig.org/conferences/eusprig-annual-conference/), [conference proceedings and paper archive](https://eusprig.org/conferences/conference-papers-and-abstracts/), ["horror stories" archive](https://eusprig.org/research-info/horror-stories/), and [discussion group](https://eusprig.org/research-info/discussion-group/). The archive and discussion group are rich sources of Excel anecdotes, of which we share two below.
+
+## Ghost Students
+
+In one 2021 Excel story archived by EuSpRIG, JP Morgan Chase was allegedly victimized in an Excel-spreadsheet-facilitated fraud. According to a [complaint filed in December 2022](https://content.fortune.com/wp-content/uploads/2023/01/Complaint-1.pdf), JPMC paid \$175 million for a start-up business, relying on 4.27 million purported college student accounts. JPMC alleges the accounts were fabricated by a "data science professor." The accounts data was delivered to JPMC in multiple, separate Excel files. If JPMC had acquired the data in a single file and performed some basic analytics on the entire data table in R or Python, they could have easily uncovered the alleged fraud before putting down the \$175 million.
+
+## Excel Formula One
+
+Racing, that is. This crazy Excel [story](https://www.the-race.com/formula-1/shocking-details-behind-painful-williams-f1-revolution/) arrived in my email inbox courtesy of [The Race](https://www.the-race.com "The Race") and the EuSpRIG discussion list. The story involves the [Williams Formula One](https://www.formula1.com/en/teams/Williams.html "Williams F1") racing team, who until 2024 were managing race car "builds" – requiring thousands of parts – with Excel.
+
+![](images/clipboard-910936519.png){width="342"}
+
+Author Scott Mitchell-Malms tells it best:
+
+> Unsurprisingly, ex-Mercedes man Vowles - someone used to class-leading operations and systems – had a damning verdict for that: “The Excel list was a joke. Impossible to navigate and impossible to update.”
+>
+> Managing a car build is not just about listing all the components needed. There wasn't data on the cost of components, how long they took to build, how many were in the system to be built...
+>
+> “When you start tracking now hundreds of 1000s of components through your organisation moving around, an Excel spreadsheet is useless.
+>
+> “You need to know where each one of those independent components are, how long it will take before it's complete, how long it will take before it goes to inspection. If there's been any problems with inspections, whether it has to go back again.
+>
+> “And once you start putting that level of complexity in which is where modern Formula 1 is, the Excel spreadsheet falls over, and humans fall over. And that's exactly where we are.
+
+One way to control spreadsheet risk is to assign spreadsheets to the right tasks. Sensitive data analytics involving medium-or-larger amounts of data should be performed by secure, robust platforms. Properly deployed, R and Python are up to this work. The more we use them in the classroom, the more accounting graduates will use them on the job.

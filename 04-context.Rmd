@@ -1,0 +1,25 @@
+# Context
+
+This Benford's Law analysis is performed in the context of a hypothetical audit of [MicroStrategy Incorporated](https://www.microstrategy.com/) (ticker: [MSTR](https://finance.yahoo.com/quote/MSTR?.tsrc=fin-srch)). At the time this scenario was written, the value of MSTR's [Bitcoin](https://finance.yahoo.com/quote/BTC-USD) holdings – see "Digital Assets" in the balance sheet excerpt below – was higher than MSTR's market capitalization.
+
+![](images/clipboard-1240177691.png){width="628"}
+
+In other words, MSTR is basically nothing but Bitcoin. Hence, if Bitcoin is bogus, so is MSTR. Interesting situation for an auditor. No?
+
+Here's the game: Assume that you have been retained by MSTR's auditor, KPMG, to assist their front-end audit risk assessment in preparation for auditing MSTR's financial statements for the year ended 12-31-2023.
+
+KPMG wants you to do a high-level reality check -- using Benford's Law -- on publicly available Bitcoin data. Do the available Bitcoin data suggest a genuine data-generating process? In other words, is the Bitcoin market real, or fake? We might start with the minute-by-minute [Bitcoin data repository on Kaggle](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data/data). You'll need a free Kaggle account to download it.
+
+Assume, hypothetically, that these data cover the 2014-2023 interval. Thus, for purposes of the exercise, the 2021 Bitcoin data are from 2023. Using this data, create an R Notebook (.rmd format) structured around the Five Basic Steps outlined in Exhibit 2-1 of the [AICPA Guide to Audit Data Analytics](https://www.aicpa-cima.com/cpe-learning/publication/guide-to-audit-data-analytics) (ADAs) to perform the analysis and report the results. Here is a summary of the five basic steps:
+
+1.  Plan the ADA
+
+2.  Access and prepare the data
+
+3.  Consider the relevance and reliability of the data
+
+4.  Perform the ADA
+
+5.  Evaluate the results and conclude
+
+We'll focus primarily on steps 2-3, though we won't explicitly identify each step. 
