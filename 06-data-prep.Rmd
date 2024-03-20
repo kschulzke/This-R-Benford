@@ -195,7 +195,7 @@ Let's visualize the zeroes by YQtr, first with a line plot.
 ```{r}
 
 ggplot(ZeroByYQtr, aes(x = YQtr, y = Count, group=1)) +
-  geom_line(colour = "blue", linewidth = .3)+
+  geom_line(colour = "blue", linewidth = 1)+
   geom_point(size = .3)+
   theme_minimal()+
 #  scale_x_date(date_breaks = "3 months", date  _labels = "%b %y") +
