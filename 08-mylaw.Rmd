@@ -47,7 +47,7 @@ Here, we create a Diffs column in MyLaw.
 MyLaw$Diffs <- MyLaw$Vol_21_actual - MyLaw$MyLaw 
 ```
 
-### My Law Plots
+## My Law Plots
 
 The first plot shows -- for minute-by-minute transaction volumes -- the actual distribution of first-two digits in the Kaggle data (green histogram); the Benford's Law predicted distribution (red dashed line); and the My Law distribution (blue dashed line) derived from Kaggle data for 2018-2020.[^07-mylaw-2]
 
@@ -68,7 +68,7 @@ MyLawPlot +
 
 ## Plot diffs by pairs
 
-Here, we plot as a bar chart the *differences* between the actual and My Law frequencies of each pair of first digits. The "fill" color is implemented with `scale_fill_gradient`, with blue as the low end and red as the high. Experiment with alternative high and low colors to see what happens.     
+Here, we plot as a bar chart the *differences* between the actual and My Law frequencies of each pair of first digits. The "fill" color is implemented with `scale_fill_gradient`, with blue as the low end and red as the high.    
 
 ```{r Plot MyLaw diffs, fig.align='center', message=FALSE, warning=FALSE}
 
@@ -80,9 +80,9 @@ ggplot(MyLaw) +
   labs(y = "Difference in relative frequency", x = "First two digits")
 ```
 
-Perhaps the biggest taken from the gradients is how little the actual frequencies deviate from My Law. This at least suggests that these data do have their own "native" first-digits pattern.
+Perhaps the biggest takeaway from this plot is how little the actual frequencies deviate from My Law. This suggests that BTC volumes have their own, non-Benford first-digits pattern.
 
-### Calculate MyLaw MAD
+## MyLaw MAD
 
 ```{r MyLaw MAD}
 
@@ -93,4 +93,4 @@ MyLawMAD
 
 ## My Law Conclusion
 
-[Evaluate the results of the ADA]
+The apparent conformity to My Law justifies little concern over potential number manipulation, unless we assume that the data were deliberately fabricated to conform to My Law frequencies. There is no evidence to suggest any such fabrication.  

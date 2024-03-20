@@ -1,6 +1,6 @@
 # Intro
 
-*Audit Data Analytics Powerplay* uses R Studio to introduce SQL, R, and Benford's Law. Prerequisites: A laptop computer, internet access, and the desire to experience R Studio and SQL in the context of audit risk assessment involving Bitcoin and Benford's Law.
+*Audit Data Analytics Powerplay* uses R Studio to introduce SQL, R, and Benford's Law in the context of a financial audit involving a large investment Bitcoin. Prerequisites: A laptop computer, internet access, and the desire to experience R Studio and SQL in the context of audit risk assessment involving Bitcoin and Benford's Law.
 
 ## Learning outcomes
 

@@ -18,7 +18,7 @@ These risks motivated the creation of the [European Spreadsheet Risk Interest Gr
 >
 > Furthermore, an inability to show that spreadsheet-based business information has been subject to procedures designed to ensure it is reliable, is in itself a failure of fiduciary and regulatory compliance.
 
-EuSpRIG backs up its warnings on risk with an [annual conference](https://eusprig.org/conferences/eusprig-annual-conference/), [conference proceedings and paper archive](https://eusprig.org/conferences/conference-papers-and-abstracts/), ["horror stories" archive](https://eusprig.org/research-info/horror-stories/), and [discussion group](https://eusprig.org/research-info/discussion-group/). The archive and discussion group are rich sources of Excel anecdotes, of which we share two below.
+EuSpRIG backs up its warnings on risk with an [annual conference](https://eusprig.org/conferences/eusprig-annual-conference/), [conference proceedings and paper archive](https://eusprig.org/conferences/conference-papers-and-abstracts/), ["horror stories" archive](https://eusprig.org/research-info/horror-stories/), and [discussion group](https://eusprig.org/research-info/discussion-group/). The archive and discussion group are rich sources of Excel anecdotes two of which are cited below.
 
 ## Ghost Students
 

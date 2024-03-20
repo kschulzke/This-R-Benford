@@ -14,11 +14,11 @@ That said, SQL is undeniably the *lingua franca* of relational databases and, th
 
 ## Speed, Reliability, Agility
 
-But while SQL is necessary for data fluency, it's far from sufficient. SQL is a powerful database management and query machine. Yet, it lacks serious visualization chops and many advanced analytical tools. For these, who do you call? The GUIs or R and Python? Let's hear from a recent MAcc student, writing at the end of the first week of a Spring semester, after doing a deep dive into R the previous Fall (my emphasis):
+But while SQL is necessary for data fluency, it's far from sufficient. SQL is a powerful database management and query machine. Yet, it lacks serious visualization chops and many advanced analytical tools. For these, who do you call? The GUIs, or R and Python? Let's hear from a recent MAcc student, writing at the end of the first week of a Spring semester, after doing a deep dive into R the previous Fall (my emphasis):
 
 > I am very excited to get back into the groove of things and expand my depth of R even further. Being I work at a small firm, I am exposed to several different aspects of accounting: tax, audit, write-up work, etc. Over the past month, I have been working on an ... audit that has required me to dig through boxes of invoices as well as huge spreadsheets. This specific [client] is extremely efficient in their work, but they are “old and set in their ways” and could use many updates in the technology and software department. Last week my manager asked me to take a rather large spreadsheet with payroll data and sort it based on several different factors. I was able to complete the task with no problem; however, *it took a good chunk of time* to complete, and there was *much room for error*. *R scared the daylights out of me at the beginning of the fall semester, but the new [Elsa - name changed!] silently whispered “I wish I could use R for this” when she gave it to me*.
 
-To be fair, "Elsa" was comparing R to Excel. But even so, what would be the point of using SQL if you can use R? In many settings, R and Python offer a better mix of flexibility, agility, speed (in design and execution), data capacity, better audit trail documentation, and lower cost – or some subset thereof – than SQL *or* the GUIs.
+To be fair, "Elsa" was comparing R to Excel. But even so, what would be the point of using SQL if you can use R? In many settings, R and Python offer a better mix of flexibility, agility, speed (in design and execution), data capacity, better audit trail documentation, and lower cost – or some subset thereof – than SQL *or* the GUIs. If the concern is communicating with readers who read only SQL, we'll show how SQL scripts can be seamlessly included in an R Studio document.
 
 GUIs can be easier to learn, but not always. Every Alteryx icon (or collection of icons) represents some R or Python function. Learning Alteryx means learning icons AND the underlying function. Meanwhile, the SQL-R-Python trio require only learning the functions *and* they put full analytical power and flexibility at the analyst's finger tips.
 
@@ -32,4 +32,4 @@ Just as important as its analytical power, coding grows the mind the coder – i
 
 That really says it all!
 
-What does it do to our students and their future work product, if they miss out on this mental weightlifting? How much more effective are they in the information business – which is what accounting really is – when they have the power to so deeply understand the data?
+What does it do to our students and their future work product, if they miss out on this kind of mental weightlifting? How much more effective can they be in the information business – which is what accounting really is – when they deeply understand the data?
