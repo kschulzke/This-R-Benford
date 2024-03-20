@@ -2,11 +2,17 @@
 
 ## R & R Studio
 
-In automotive terms, you can think of R and its "packages" as an analytical engine and drive train. R Studio is the dashboard and steering wheel – technically called an "integrated development environment" or "IDE" – that keeps data, R packages, scripts, and output visible, organized, moving forward, and instantly accessible to the auditor or data analyst.
+In automotive terms, you can think of R and its "packages" as an analytical engine and drive train. R Studio is the dashboard and steering wheel – technically called an "integrated development environment" or "IDE" – that keeps data, R packages, scripts, and output visible, organized, moving forward, and instantly accessible to the auditor or data analyst. The screen shot below shows my R Studio screen with the R "environment" (upper-right panel) showing R data objects, the lower right panel showing local files containing data (e.g., .csv) and R markdown scripts (e.g., .Rmd), and the scripting or editing window (upper left), which is similar to MS Word but with executable code chunks and output in addition to the body text:
 
-I am typing these words into an [Rmarkdown](https://rmarkdown.rstudio.com/) (.Rmd) file that I view or "monitor" in R Studio. Each chapter of the book is contained in a separate .Rmd file. The chapters are collated and rendered in .html, .pdf and other formats as a book using [bookdown](https://bookdown.org/) [@bookdown2016]. I use [Github](https://github.com/kschulzke/AICPA-Power-Play) for version control, primarily through the R Studio IDE which, truth be told, softens the coding with lots of GUI.
+![](images/clipboard-2868608260.png)
 
-R and R Studio can be accessed through a free or low-cost account at [Posit.Cloud](https://posit.cloud/). Alternatively, they can be [locally installed on a laptop](https://rstudio-education.github.io/hopr/starting.html). Consistent with its open-source roots, R is OS-agnostic; it works equally well on MacOS, Windows, and Linux. It's not currently feasible to use R Studio on a smartphone. Too much analytical power for an "itty bitty living space"!
+In the R Studio screen shot below, the scripting panel (upper left) is shown in "source" mode (displaying code line numbers), with the Git interface in the upper right panel.
+
+![](images/clipboard-3778416653.png)
+
+I am typing these words into an [Rmarkdown](https://rmarkdown.rstudio.com/) (.Rmd) file that I view or "monitor" in the upper left panel of R Studio. Each chapter of the book is contained in a separate .Rmd file. The chapters are collated and rendered in .html, .pdf and other formats as a book using [bookdown](https://bookdown.org/) [@bookdown2016]. I use [Github](https://github.com/kschulzke/AICPA-Power-Play) for version control, primarily through the R Studio IDE which, truth be told, softens the coding with lots of GUI.
+
+R and R Studio can be accessed through a free or low-cost account at [Posit.Cloud](https://posit.cloud/). Alternatively, they can be [locally installed on a laptop](https://rstudio-education.github.io/hopr/starting.html). Consistent with its open-source roots, R is OS-agnostic; it works equally well on MacOS, Windows, and Linux. It's not currently feasible to use R Studio on a smartphone. Too much analytical power for such an "itty bitty living space"!
 
 ## Resources
 
@@ -26,7 +32,7 @@ Python -- [like Java](https://www.bmc.com/blogs/python-vs-java/) -- is a general
 
 ## Libraries or Packages
 
-Think of libraries (a.k.a. packages) as apps that extend the base R platform. Packages like [tidyverse](https://www.tidyverse.org/), [ggplot2](https://ggplot2-book.org/), and benford.analysis are to R what Word and Excel are to Microsoft Office, except that R packages are open source. Packages perform a myriad tasks, from data wrangling and text mining, to times series analysis and forecasting, to cluster analysis, linear regression, [GLMs](https://bookdown.org/roback/bookdown-BeyondMLR/ "Beyond MLR"), geocomputation, and elegant visualization, as well as management and publication of team-based analytical projects. All of these packages come with extensive documentation and the most frequently used offer comprehensive [cheatsheets](https://posit.co/resources/cheatsheets/).
+Think of libraries (a.k.a. packages) as apps that extend the capabilities of the base R platform. Packages like [tidyverse](https://www.tidyverse.org/), [ggplot2](https://ggplot2-book.org/), and benford.analysis are to R what Word and Excel are to Microsoft Office, except that R packages are open source. Packages perform a myriad tasks, from data wrangling and text mining, to times series analysis and forecasting, to cluster analysis, linear regression, [GLMs](https://bookdown.org/roback/bookdown-BeyondMLR/ "Beyond MLR"), geocomputation, and elegant visualization, as well as management and publication of team-based analytical projects. All of these packages come with extensive documentation and the most frequently used offer comprehensive [cheatsheets](https://posit.co/resources/cheatsheets/). Some libraries get full-length book treatment (e.g., fpp3 [@fpp3], [Forecasting: Principles and Practice](https://otexts.com/fpp3/ "fpp3")).
 
 ## Data
 
