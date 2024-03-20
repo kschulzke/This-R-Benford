@@ -4,7 +4,7 @@ This chapter walks through the Benford's Analysis process, from importing the da
 
 ## Load libraries
 
-To get things done in R, we must first load libraries (a.k.a. packages). These act like apps or tools for doing specific tasks like data import, cleansing, transformation, and visualization. We'll include `tictoc` [@tictoc] to compare process times for different scripting options.
+To get things done in R, we must first load libraries (a.k.a. packages). These act like apps or tools for doing specific tasks like data import, cleansing, transformation, and visualization. We'll include `tictoc` compare process times for different scripting options.
 
 This chunk loads the libraries. But wait! Before libraries can be *loaded* into a project using the `library` function, they must first be [installed](https://rstudio-education.github.io/hopr/packages.html#packages-1) with your R instance. This code chunk assumes that you've already installed these packages.
 
@@ -24,7 +24,7 @@ Preparation tasks will include importing the data into R Studio, performing some
 
 After downloading the [Bitcoin Historical Data](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data) from Kaggle, we import it into R Studio using the `data.table` package[@data.table] `fread` function, which works much faster on tables containing millions of rows. We could use the `dplyr` package[@dplyr] `read_csv` function, which still effective but considerably slower. We'll assign the data to an object called BTC_master.
 
-In the script that follows, the `<-` symbol is the "assignment operator," which assigns the contents of BTC_data.csv to the R object "BTC_master". We use `tic` and `toc` to measure execution speed, which – for almost 4.9 million rows – approximates 0.25 seconds using `fread`. The speed varies with the hardware (e.g., RAM and CPU specs) and other demands on it.
+In the script that follows, the `<-` symbol is the "assignment operator," which assigns the contents of BTC_data.csv to the R object "BTC_master". We use `tic` and `toc` to measure execution speed. The speed varies with the hardware (e.g., RAM and CPU specs) and other demands on it.
 
 ```{r freed BTC data}
 tic()
