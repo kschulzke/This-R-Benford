@@ -1,0 +1,96 @@
+# My Law analysis
+
+The My Law concept was first articulated in print by Mark Nigrini in 2012. The idea is that individual organizations may develop, in their data sets, first-digits patterns that do not conform to Benford's Law but are internally consistent over time. Thus, these proprietary digital patterns might be used as a "My Law" in place of Benford's Law. Significant departures from My Law might call for further investigation.[^07-mylaw-1]
+
+[^07-mylaw-1]: Mark Nigrini, Benford's Law: Applications for Forensic Accounting, Auditing, and Fraud Detection (2012), pp. 295-300.
+
+In the current exercise, we'll use Kaggle's BTC volumes numbers for the period 2018-2020 to establish the My Law distribution benchmark. We'll then compare 2021 volume numbers to the benchmark, calculate a MAD statistic and discuss the implications.
+
+## Benford x 2
+
+Similar to the Benford analysis above, our first step is to use `benford` to create the necessary Benford objects for 2018-2020 and 2021. We'll then use information contained in these objects to create a separate MyLaw object.
+
+```{r}
+
+bfd.18_20 <- benford(BTC_18_20$Vol_BTC) 
+bfd.21 <- benford(BTC_21$Vol_BTC)
+
+```
+
+## Create MyLaw object
+
+The MyLaw object will contain four columns. Run this chunk and then use `head` to view what's inside.
+
+```{r}
+
+MyLaw <- data.frame(as.character(bfd.18_20$bfd$digits), 
+                    bfd.18_20$bfd$data.dist, 
+                    bfd.21$bfd$data.dist, 
+                    bfd.21$bfd$benford.dist) 
+head(MyLaw)
+```
+
+We'll now rename the MyLaw columns for ease in writing (and later reading) the script.
+
+```{r}
+MyLaw <- MyLaw |>    
+  
+  rename(Digits = as.character.bfd.18_20.bfd.digits., 
+         MyLaw = bfd.18_20.bfd.data.dist,        
+         Vol_21_actual = bfd.21.bfd.data.dist, 
+         BfdDist = bfd.21.bfd.benford.dist)
+```
+
+Here, we create a Diffs column in MyLaw.
+
+```{r MyLaw diffs}
+MyLaw$Diffs <- MyLaw$Vol_21_actual - MyLaw$MyLaw 
+```
+
+### My Law Plots
+
+The first plot shows -- for minute-by-minute transaction volumes -- the actual distribution of first-two digits in the Kaggle data (green histogram); the Benford's Law predicted distribution (red dashed line); and the My Law distribution (blue dashed line) derived from Kaggle data for 2018-2020.[^07-mylaw-2]
+
+[^07-mylaw-2]: Michael Clark's Benford's ADA analysis submission in ACCT 7530 contributed some snippets and inspired others used in the My Law analysis.
+
+```{r MyLaw plots, fig.align='center', message=FALSE, warning=FALSE}
+
+MyLawPlot <- ggplot(MyLaw) +   
+  geom_line(aes(Digits, MyLaw), group = 1, color = "blue", linewidth = 1, linetype = 2) +   
+  geom_bar(aes(Digits, Vol_21_actual), stat = "identity", fill = "darkgreen", alpha = 0.5) +   
+  geom_line(aes(Digits, BfdDist), group = 1, color = "red", linetype = 2, linewidth = 1)  
+
+MyLawPlot +   
+  theme_minimal()+   
+  theme(axis.text.x = element_text(size = 5, angle = 90, vjust = 1, hjust = 1.5)) +   
+  labs(y = "Relative frequency", x = "First two digits")
+```
+
+## Plot diffs by pairs
+
+Here, we plot as a bar chart the *differences* between the actual and My Law frequencies of each pair of first digits. The "fill" color is implemented with `scale_fill_gradient`, with blue as the low end and red as the high. Experiment with alternative high and low colors to see what happens.     
+
+```{r Plot MyLaw diffs, fig.align='center', message=FALSE, warning=FALSE}
+
+ggplot(MyLaw) + 
+  geom_bar(aes(Digits, Vol_21_actual - MyLaw, fill = Vol_21_actual -  MyLaw), stat = "identity", show.legend = FALSE) +   
+  scale_fill_gradient(low = "blue", high = "red") +   
+  theme_minimal() +   
+  theme(axis.text.x = element_text(size = 5, angle = 90, vjust = 0.5, hjust = 1)) +   
+  labs(y = "Difference in relative frequency", x = "First two digits")
+```
+
+Perhaps the biggest taken from the gradients is how little the actual frequencies deviate from My Law. This at least suggests that these data do have their own "native" first-digits pattern.
+
+### Calculate MyLaw MAD
+
+```{r MyLaw MAD}
+
+MyLawMAD <- mean(abs(MyLaw$Vol_21_actual - MyLaw$MyLaw)) 
+MyLawMAD 
+
+```
+
+## My Law Conclusion
+
+[Evaluate the results of the ADA]

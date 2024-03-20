@@ -1,0 +1,398 @@
+# Data Prep
+
+This chapter walks through the Benford's Analysis process, from importing the data to performing the analytical tasks and interpreting the results.
+
+## Load libraries
+
+To get things done in R, we must first load libraries (a.k.a. packages). These act like apps or tools for doing specific tasks like data import, cleansing, transformation, and visualization. We'll include `tictoc` [@R-tictoc] to compare process times for different scripting options.
+
+This chunk loads the libraries. But wait! Before libraries can be *loaded* into a project using the `library` function, they must first be [installed](https://rstudio-education.github.io/hopr/packages.html#packages-1) with your R instance. This code chunk assumes that you've already installed these packages.
+
+```{r Load libraries, include=FALSE}
+library(benford.analysis)
+library(tidyverse)
+library(sqldf)
+library(data.table)
+library(tictoc)
+```
+
+## Prep & validate data
+
+Preparation tasks will include importing the data into R Studio, performing some basic validation routines, and then transforming the data for analysis.
+
+### Import
+
+After downloading the [Bitcoin Historical Data](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data) from Kaggle, we import it into R Studio using the `data.table` package [@R-data.table] `fread` function, which works much faster on tables containing millions of rows. We could use the `dplyr` package [@R-dplyr] `read_csv` function, which still effective but considerably slower. We'll assign the data to an object called BTC_master.
+
+In the script that follows, the `<-` symbol is the "assignment operator," which assigns the contents of BTC_data.csv to the R object "BTC_master". We use `tic` and `toc` to measure execution speed, which – for almost 4.9 million rows – approximates 0.25 seconds using `fread`. The speed varies with the hardware (e.g., RAM and CPU specs) and other demands on it.
+
+```{r freed BTC data}
+tic()
+BTC_master <- fread("BTC_data.csv")  
+toc()
+```
+
+### Validate
+
+#### Take a peek
+
+Like all good data analytics projects, this one surveys the data at a high level before drilling down on details.
+
+We can use R or [SQLite](https://www.sqlite.org/), or both, to start high-altitude validation. When we want SQL, we'll use SQLite – instead of, e.g., the excellent open-source [PostgreSQL](https://www.postgresql.org/) – because SQLite automatically spins up its own local SQL server, while other SQL dialects require creation of a separate server. We use SQL in this book to show how SQL can be taught/learned in the R Studio IDE, not because we need SQL; R can do everything we need, often better than SQL.
+
+Let's peek at the first few rows of BTC_master using base R's `head` function.
+
+```{r echo=TRUE}
+head(BTC_master)
+```
+
+The SQL equivalents are `SELECT` (with `LIMIT`) and `FETCH`, though they require more keystrokes than `head`. Other options are explained at [W3Schools](https://www.w3schools.com/sql/sql_top.asp).
+
+Note that R is case-sensitive, while SQL is not. However, it is customary in writing SQL to capitalize keywords or functions, e.g., `SELECT`. We'll invoke SQL through the `sqldf` function of the `sqldf` package[@R-sqldf]. Setting the SQL code apart from the `sqldf` wrapper is a stylistic choice that focuses attention on the SQL itself.
+
+```{r}
+
+sqldf("
+
+SELECT * FROM BTC_master
+LIMIT 6;
+
+")
+
+```
+
+R's `glimpse` offers a third quick view.
+
+```{r}
+glimpse(BTC_master)
+```
+
+#### Summary & NaNs
+
+A statistical `summary` (also R) offers further insights. SQL as no equivalent.
+
+```{r}
+summary(BTC_master)
+```
+
+We see 1243608 "NaN" values in all columns, except Timestamp. This is consistent with the data source's statement that "NaN" signifies minutes with zero trading activity. We could also count the NaNs for a single column – like Open – using the `count` function. SQLite chokes on NaN values, so we'll use R.
+
+```{r}
+BTC_master %>% 
+  count(is.nan(Open))
+```
+
+Assuming that NaN means "no trades" in the relevant minute, then we can replace all NaN values with 0. This will help with numeric operations. Should be easy, right? In R, it is. ChatGPT 4 produced two alternative R scripts in less than one minute. We'll run the shortest (Script 1) but present the other (Script 2) for comparison.
+
+Script 1
+
+```{r}
+# base R NaN replacement
+tic()
+BTC_master[is.na(BTC_master)] <- 0
+toc()
+```
+
+Script 2
+
+```{r rem NaN dplyr, echo=TRUE}
+# # reset BTC_master
+# BTC_master <- fread("BTC_data.csv")
+# 
+# # dplyr NaN replacement
+# tic()
+# BTC_master <- BTC_master %>%
+#   mutate(across(everything(), ~replace(., is.nan(.), 0)))
+# toc()
+```
+
+As a cross-check that all NaNs are gone, let's run the `summary` function again.
+
+```{r}
+tic()
+summary(BTC_master)
+toc()
+```
+
+Look, Mom! No cavities!
+
+Ask chatGPT how to do this in SQL or Alteryx. Hint: It's a nightmare, especially in Alteryx. The Data Cleansing Tool won't work because Alteryx imports all of the BTC_master columns as strings and the Data Cleansing Tool works only on numeric columns. Thus, we'd have to use the Formula tool on each column individually:
+
+![](images/clipboard-3510629512.png){width="443"}
+
+Or you could just fall back on the Alteryx R integration; Alteryx is, at its core, an R GUI!
+
+### Transform
+
+A few transformations will help with further validation. Transformation can mean anything from selecting particular columns and creating new ones, to transposing or joining columns or rows from other tables, to grouping data by time or other variables. We'll start with the time-based groupings.
+
+#### Zero-trade over time
+
+Do the zero-trade minutes follow a temporal pattern? We'll first need to convert the Timestamp column to Date format so that we can group by time periods, like years, quarters, or months. Before we do that, let's drop some columns – here, by selecting just the columns we need – to speed processing. While we're at it, let's streamline the volume and price column names.
+
+```{r}
+BTC_master <- BTC_master %>% 
+  select (Timestamp, Close, `Volume_(BTC)`, `Volume_(Currency)`, Weighted_Price) |> 
+  rename(Vol_BTC = `Volume_(BTC)`, Vol_Curr = `Volume_(Currency)`, Wt_Price = Weighted_Price)
+head(BTC_master)
+```
+
+Now, for the Date column! Converting UNIX time stamps to Date format in SQL is a bit of pain. Let's try base R's `as.POSIXct` function.
+
+```{r}
+BTC_master$posixt <- as.POSIXct(BTC_master$Timestamp, origin = "1970-01-01")
+BTC_master$Date <- as.Date(BTC_master$posixt)
+
+# Use head and tail functions to print first and last five Date values
+head(BTC_master$Date)
+tail(BTC_master$Date)
+
+```
+
+Now, we can create Year, Qtr, and YQtr columns:
+
+```{r}
+BTC_master$Year <- year(BTC_master$Date)
+BTC_master$Qtr <- quarter(BTC_master$Date)
+BTC_master$YQtr <- paste0(year(BTC_master$Date),
+                             "/0",
+                             quarter(BTC_master$Date))
+```
+
+Now, let's get zeroes by YQtr. First, SQL, then R. Note the difference in processing times, at least in this environment.
+
+```{r}
+
+# SQLite
+
+tic()
+ZeroByYQtrS <- sqldf("
+      
+SELECT YQtr, count(Close) as Count
+FROM BTC_master
+WHERE Close = 0
+GROUP BY YQtr
+      
+      ")
+head(ZeroByYQtrS)
+toc()
+
+# R dplyr package
+
+tic()
+ZeroByYQtr <- BTC_master %>%
+  filter(Close == 0) %>% 
+  group_by(YQtr) %>% 
+  summarise(Count = n())
+head(ZeroByYQtr)
+toc()
+```
+
+#### Time Plots
+
+Let's visualize the zeroes by YQtr, first with a line plot.
+
+```{r}
+
+ggplot(ZeroByYQtr, aes(x = YQtr, y = Count, group=1)) +
+  geom_line(colour = "blue", linewidth = .3)+
+  geom_point(size = .3)+
+  theme_minimal()+
+#  scale_x_date(date_breaks = "3 months", date  _labels = "%b %y") +
+  theme(axis.text.x = element_text(size = 6, angle = 40, hjust = .70), plot.caption = element_text(size = 6.5), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
+  labs(title = "Zero-trade minutes per Year/Quarter", subtitle = "Over the x-axis time interval", y = "Zero-trade minutes ", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
+```
+
+So quarterly zero minutes started near zero at the end of 2011 and climbed to year in the form of a box-and-whisker plot. We'll zoom in a bit with `ggplot2`'s `coord_cartesian` function to get more detail where most of the data located.
+
+```{r Volume Box, message=FALSE, warning=FALSE}
+# Create box plot object
+Vol_box <- ggplot(BTC_master, aes(as.factor(Year), log10(Vol_BTC))) + 
+  geom_boxplot()
+
+# Customize the box plot
+Vol_box +
+   #coord_cartesian(ylim = c(0, 10))+
+   labs(title = "Daily zero-trade minutes by Year", subtitle = "Over the x-axis time interval", y = "log10(Daily zero-trade minutes)", x = "Year", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")+
+  theme_minimal()
+
+```
+
+Are any Timestamp values duplicated? What is the number of distinct Timestamp values? Does it match the number of observations? SQL can answer this easily.
+
+```{r}
+Timestamps <- sqldf("
+  
+  SELECT COUNT(DISTINCT Timestamp) as Timestamps 
+  FROM BTC_master
+  
+  ")
+
+Timestamps
+```
+
+This confirms zero duplicated Timestamp values, as the count, 4857377, equals the number of rows in BTC_master.
+
+How many values should we find in the table, assuming a row for every minute over the entire time period covered? Is BTC_master missing any minutes? Let's use R to find out. First, we'll calculate the number of minutes between the first and last rows in the table. We'll apply the `lubridate` `time_length` function to the posixt column because it states dates and times in Unix format. Date won't work because it contains only the dates.
+
+```{r}
+Minutes <- time_length(interval(min(BTC_master$posixt), max(BTC_master$posixt)), "minute")
+Minutes
+```
+
+So the entire interval contains 4863848 minutes. But BTC_master has only 4857377 rows, for a difference of 6471.
+
+```{r}
+Minutes - Timestamps
+(Minutes - Timestamps)/Minutes
+```
+
+6471 minutes (approx. .13 percent) are missing from the table. Which minutes? Why?
+
+#### Yahoo comparison
+
+What about *days* without trades? How does the Kaggle data differ from other sources? To find out, let's import daily BTC data from Yahoo and take a `glimpse`.
+
+```{r Import Yahoo, message=FALSE, warning=FALSE}
+
+BTC_Yah <- fread('BTC_Daily_Yahoo.csv')
+
+glimpse(BTC_Yah)
+tail(BTC_Yah)
+
+```
+
+We can see that the Yahoo data begins on 9-17-14 and ends 3-17-24. We know that BTC_master covers a different interval, from 2011 to 2021, so we can compare the two tables over the 2014-2021 period. Because of the missing minutes, we suspect that BTC_master may also be missing some days. To find out, we'll first `anti_join` BTC_Yah (which we believe has a complete set of dates) with BTC_master. This `anti_join` will reveal any dates in BTC_Yah that are NOT in BTC_master.
+
+To do this, we'll first convert the BTC_Yah Date variable to date format using `as.Date`. We'll also streamline BTC_master by dropping unnecessary columns and `group_by` Date.
+
+##### anti_join
+
+First, convert the date.
+
+```{r as.Date BTC_Yah}
+BTC_Yah$Date <- as.Date(BTC_Yah$Date)
+BTC_Yah$Vol_Yah <- as.numeric(BTC_Yah$Volume)
+```
+
+Follow with the anti-join and filter to eliminate dates after 3-31-21.
+
+```{r Anti-join BTC_Yah}
+tic()
+NIN_BTC_Yah <- BTC_Yah|> 
+  anti_join (BTC_master, join_by(Date)) |> 
+  filter(Date < "2021-04-01")
+NIN_BTC_Yah
+toc()
+```
+
+So only three dates -- Jan 6-8, 2015 -- are in BTC_Yah but not in BTC_master. 3 days = 4320 minutes, which may account for the majority of the missing minutes. Now, we can run join to get a combined table that we can use for further analysis.
+
+```{r Join BTC and Yah}
+tic()
+
+BTC_join <- BTC_master |> 
+  select(Date, Vol_BTC, Vol_Curr, Wt_Price) |>
+  filter(Date > '2014-9-16') |> 
+  group_by(Date) |> 
+  summarise(Vol_BTC = sum(Vol_BTC), Vol_Curr = sum(Vol_Curr), Wt_Price = mean(Wt_Price)) |>   right_join(BTC_Yah, join_by(Date == Date))
+
+head(BTC_join)
+
+toc()
+```
+
+In SQL? For another day!
+
+But let's use the combined table in some visualizations. We can start with overlaid histograms.
+
+```{r message=FALSE, warning=FALSE}
+
+Vol_hist<-  BTC_join |> 
+    ggplot(aescolor="#e9ecef", alpha=0.8, position = 'identity') +
+    geom_histogram(aes(log10(Vol_Yah)), fill = "#404080", bins = 50, alpha = .8) +
+    geom_histogram(aes(log10(Vol_BTC)), fill= "#69b3a2", bins = 50, alpha = .8) +
+    #coord_cartesian(xlim = c(0, 1e11))+ (zoom layer)
+    theme_minimal() 
+Vol_hist  
+
+```
+
+Not exactly overlaid, are they? This is because the Kaggle and Yahoo "volume" distributions are so dissimilar. Hmm.
+
+```{r message=FALSE, warning=FALSE}
+library(patchwork)
+
+Kag_hist <-  BTC_join |> 
+    ggplot(aescolor="#e9ecef", alpha=0.6, position = 'identity') +
+    geom_histogram(aes(log10(Vol_BTC)), fill = "#69b3a2", bins = 40) +
+    #coord_cartesian(xlim = c(0,9))+ (zoom layer)
+    theme_minimal()
+
+Yah_hist <-  BTC_join |> 
+    ggplot(aescolor="#e9ecef", alpha=0.6, position = 'identity') +
+    geom_histogram(aes(log10(Vol_Yah)), fill = "#404080", bins = 40) +
+    #coord_cartesian(xlim = c(0,9))+ (zoom layer)
+    theme_minimal()
+
+Yah_hist + Kag_hist
+ 
+```
+
+Let's try a couple of additional plots. First, overlaid line plots.
+
+```{r}
+
+ggplot(ZeroByYQtr, aes(x = YQtr, y = Count, group=1)) +
+  geom_line(colour = "blue", linewidth = .3)+
+  geom_point(size = .3)+
+  theme_minimal()+
+#  scale_x_date(date_breaks = "3 months", date  _labels = "%b %y") +
+  theme(axis.text.x = element_text(size = 6, angle = 40, hjust = .70), plot.caption = element_text(size = 6.5), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
+  labs(title = "Zero-trade minutes per Year/Quarter", subtitle = "Over the x-axis time interval", y = "Zero-trade minutes ", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
+
+
+```
+
+#### My Law Transforms
+
+For our My Law analysis, we'll use the combined 2018-2020 period as the My Law benchmark. Thus, we must run the benford function first on the 2018-2020 numbers and then, separately, on 2021.
+
+To combine 2018-2020, we can filter *into* the combined object ("BTC_18_20") only the rows with Year equal to 2018, 2019, or 2020. We also need 2021 as a separate object, "BTC_21". In this chunk, we create BTC_18_20 followed by BTC_21.
+
+In addition, because Benford analyses typically focus on positive and negative numbers separately, we want to filter out negative numbers, if any. It's also important to have sufficient digits to distinguish patterns in first digits, so we should filter out values less than 10. We can execute all of these filters with one code chunk.
+
+```{r Benford filters, warning=FALSE}
+
+BTC_18_20 <- sqldf("
+  
+SELECT Timestamp, Year, Vol_BTC
+FROM BTC_master
+WHERE (Year IN (2018, 2019, 2020) and Vol_BTC >= 10)
+
+")
+
+BTC_21 <- sqldf("
+  
+SELECT Timestamp, Year, Vol_BTC
+FROM BTC_master
+WHERE (Year = 2021 and Vol_BTC >= 10)
+
+")
+
+```
+
+We can do the same thing in R, with the following syntax.
+
+```{r echo=TRUE, warning=FALSE}
+
+BTC_21 <- BTC_master |> 
+  select (Timestamp, Year, Vol_BTC) |> 
+  filter(Year == 2021 & Vol_BTC >= 10)
+
+BTC_18_20 <- BTC_master |> 
+  select (Timestamp, Year, Vol_BTC) |> 
+  filter(Year %in% c(2018, 2019, 2020) & Vol_BTC >= 10)
+```
+
+With these data preparation steps complete, we can move on to the Benford and My Law analyses.

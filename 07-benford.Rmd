@@ -1,0 +1,100 @@
+# Benford Analysis
+
+## Create Benford object
+
+We use the [benford.analysis package](https://www.rdocumentation.org/packages/benford.analysis/versions/0.1.5), running its `benford` function against the BTC_master data, producing a Benford object, which we'll call "bfd.mast". From this object, we will extract information to perform a Benford analysis.
+
+```{r} 
+
+bfd.mast <- benford(BTC_master$Vol_BTC, 2, sign="positive")  
+bfd.mast
+
+```
+
+## Interpret `benford` output
+
+This output presents a lot to absorb, but we'll keep it simple. One statistic to note is the MAD (mean absolute deviation). Based on the significance thresholds proposed by Nigrini (2012), which are programmed into the benford.analysis package [@R-benford.analysis], the MAD of 0.001091855 suggests little overall deviation from Benford's Law. However, the information value of MAD and the other statistics presented in the `benford` output is open to question for reasons explained by Barney & Schulzke (2016) and Mark Nigrini (2017). Let's take a look at the plots, which reveal some interesting patterns.
+
+## Benford plots
+
+```{r} 
+
+plot(bfd.mast)
+
+```
+
+The Digits Distribution, Summation Distribution, and Summation Difference plots are relevant and useful. The other plots not so much. The Digits Distribution plot reveals five spikes above the Benford's Law
+
+## Drill down
+
+The Benford object, bfd.mast, contains a wealth of additional information. Using benford.analysis functions, we access and comment on some of it below.
+
+### Top ten suspects
+
+Here, we create a table of the top ten "suspect" *digits pairs* sorted by decreasing absolute deviation.
+
+```{r}
+
+head(suspectsTable(bfd.mast),10)
+
+```
+
+### Get suspects
+
+Given that pairs 10 and 20 are the top two suspects, `getSuspects` with `how.many` = 2 retrieves all *observations*, sorted by ascending Timestamp, that begin with 10 or 20. The `head` function retrieves only the first six observations.
+
+```{r Suspect obs}
+
+head(getSuspects(bfd.mast, BTC_master, how.many=2))
+
+```
+
+### Duplicate values
+
+`duplicatesTable` produces a table of duplicated Vol_BTC *values* sorted by number of duplicates (descending).
+
+```{r duplicatesTable}
+
+duplicatesTable(bfd.mast)
+
+```
+
+Here, we call *observations* with the two most frequently duplicated Vol_BTC values.
+
+```{r getDuplicates}
+
+duplicates <- getDuplicates(bfd.mast, BTC_master, how.many = 2) 
+head(duplicates)
+
+```
+
+Get observations starting with pairs 50 or 99.
+
+```{r 50 or 99}
+
+digits_50_and_99 <- getDigits(bfd.mast, BTC_master, digits=c(50, 99))
+head(digits_50_and_99)
+
+```
+
+## EMAD and ExcessMAD
+
+EMAD \<- 1/sqrt(158.8\*n) ExcessMAD \<- bfd.21[["MAD"]] - EMAD[^06-benford-1]
+
+[^06-benford-1]: See Barney & Schulzke (2016), Moderating ‘‘Cry Wolf’’ Events with Excess MAD in Benford’s Law Research and Practice, A77.
+
+```{r EMAD etc}
+
+EMAD <- 1/sqrt(158.8*bfd.mast$info$n) 
+ExcessMAD <- bfd.mast$MAD - EMAD 
+bfd.mast$MAD 
+EMAD 
+ExcessMAD
+
+```
+
+## Benford's Law Conclusion
+
+als;ldkjfalsjkfda;lks
+
+## 
