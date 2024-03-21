@@ -53,17 +53,17 @@ The SQL equivalents are `SELECT` (with `LIMIT`) and `FETCH`, though they require
 Note that R is case-sensitive, while SQL is not. However, it is customary in writing SQL to capitalize keywords or functions, e.g., `SELECT`. We'll invoke SQL through the `sqldf` function of the `sqldf` package[@sqldf]. Setting the SQL code apart from the `sqldf` wrapper is a stylistic choice that focuses attention on the SQL itself.
 
 ```{r}
-
+tic()
 sqldf("
 
 SELECT * FROM BTC_master
 LIMIT 6;
 
 ")
-
+toc()
 ```
 
-R's `glimpse` offers a third quick view.
+R's `glimpse` offers a third view.
 
 ```{r}
 glimpse(BTC_master)
@@ -71,13 +71,13 @@ glimpse(BTC_master)
 
 #### Summary & NaNs
 
-A statistical `summary` (also R) offers further insights. SQL as no equivalent.
+A statistical `summary` (also R) offers further insights. SQL has no equivalent.
 
 ```{r}
 summary(BTC_master)
 ```
 
-We see 1243608 "NaN" values in all columns, except Timestamp. This is consistent with the data source's statement that "NaN" signifies minutes with zero trading activity. We could also count the NaNs for a single column – like Open – using the `count` function. SQLite chokes on NaN values, so we'll use R.
+We see 1243608 "NaN" values in all columns except Timestamp. This is consistent with the data source's statement that "NaN" signifies minutes with zero trading activity. We could also count the NaNs for a single column – like Open – using the `count` function. SQLite chokes on NaN values, so we'll use R.
 
 ```{r}
 BTC_master %>% 
@@ -116,7 +116,7 @@ summary(BTC_master)
 toc()
 ```
 
-Look, Mom! No cavities!
+Look, Mom! No NaNs!
 
 Ask chatGPT how to do this in SQL or Alteryx. Hint: It's a nightmare, especially in Alteryx. The Data Cleansing Tool won't work because Alteryx imports all of the BTC_master columns as strings and the Data Cleansing Tool works only on numeric columns. Thus, we'd have to use the Formula tool on each column individually:
 

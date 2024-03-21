@@ -68,16 +68,18 @@ MyLawPlot +
 
 ## Plot diffs by pairs
 
-Here, we plot as a bar chart the *differences* between the actual and My Law frequencies of each pair of first digits. The "fill" color is implemented with `scale_fill_gradient`, with blue as the low end and red as the high.
+Here, we plot *differences* between the actual and My Law frequencies. The "fill" color is implemented with `scale_fill_gradient`, with blue as the low end and red as the high.
 
 ```{r Plot MyLaw diffs, fig.align='center', message=FALSE, warning=FALSE}
 
-ggplot(MyLaw) + 
+MyLawDiffsPLot <- ggplot(MyLaw) + 
   geom_bar(aes(Digits, Vol_21_actual - MyLaw, fill = Vol_21_actual -  MyLaw), stat = "identity", show.legend = FALSE) +   
   scale_fill_gradient(low = "blue", high = "red") +   
   theme_minimal() +   
   theme(axis.text.x = element_text(size = 5, angle = 90, vjust = 0.5, hjust = 1)) +   
   labs(title = "Bitcoin Volume First-Digits Pairs Differences", subtitle = "2021 compared to 2018-2020", y = "Differences in relative frequency", x = "First two digits", caption = "Data source: Kaggle")
+
+MyLawDiffsPLot
 ```
 
 Perhaps the biggest takeaway from this plot is how little the actual frequencies deviate from My Law. This suggests that BTC volumes have their own, non-Benford first-digits pattern.
@@ -93,4 +95,4 @@ MyLawMAD
 
 ## My Law Conclusion
 
-The apparent conformity to My Law justifies little concern over potential number manipulation, unless we assume that the data were deliberately fabricated to conform to My Law frequencies. There is no evidence to suggest any such fabrication.
+The apparent conformity to My Law justifies little concern over potential number manipulation, unless we assume that the data were deliberately fabricated to conform to My Law frequencies. There is little evidence to suggest any such fabrication.

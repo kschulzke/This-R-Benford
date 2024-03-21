@@ -2,11 +2,11 @@
 
 ## R & R Studio
 
-In automotive terms, you can think of R and its "packages" as an analytical engine and drive train. R Studio is the dashboard and steering wheel – technically called an "integrated development environment" or "IDE" – that keeps data, R packages, scripts, and output visible, organized, moving forward, and instantly accessible to the auditor or data analyst. The screen shot below shows my R Studio screen with the R "environment" (upper-right panel) showing R data objects, the lower right panel showing local files containing data (e.g., .csv) and R markdown scripts (e.g., .Rmd), and the scripting or editing window (upper left), which is similar to MS Word but with executable code chunks and output in addition to the body text:
+In automotive terms, you can think of R and its "packages" as an analytical engine and drive train. R Studio is the dashboard and steering wheel – technically called an "integrated development environment" or "IDE" – that keeps data, R packages, scripts, and output visible, organized, moving forward, and instantly accessible to the auditor or data analyst. The screen shot below shows my R Studio screen with the R "environment" (upper-right panel) showing R data objects, the lower right panel showing local files containing data (e.g., .csv) and R markdown scripts (e.g., .Rmd), and the scripting or editing window (upper left) in *visual* mode, which is similar to MS Word but with executable code chunks and output in addition to the body text:
 
 ![](images/clipboard-2868608260.png)
 
-In the R Studio screen shot below, the scripting panel (upper left) is shown in "source" mode (displaying code line numbers), with the Git interface in the upper right panel.
+In the R Studio screen shot below, the scripting panel (upper left) is shown in *source* mode (displaying code line numbers), with the Git interface in the upper right panel.
 
 ![](images/clipboard-3778416653.png)
 
