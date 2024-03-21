@@ -200,10 +200,10 @@ ggplot(ZeroByYQtr, aes(x = YQtr, y = Count, group=1)) +
   theme_minimal()+
 #  scale_x_date(date_breaks = "3 months", date  _labels = "%b %y") +
   theme(axis.text.x = element_text(size = 6, angle = 40, hjust = .70), plot.caption = element_text(size = 8), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
-  labs(title = "Zero-trade minutes per Year/Quarter", subtitle = "Over the x-axis time interval", y = "Zero-trade minutes ", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
+  labs(title = "Bitcoin zero-trade minutes", subtitle = "2011-2021 per year/quarter", y = "Zero-trade minutes ", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
 ```
 
-So quarterly zero-trade minutes started near zero 2011 Q4 and climbed to about 125,000 by 2012 Q1, dropping quickly after 2012 Q4. That seems consistent with growing interest in Bitcoin.
+So quarterly zero-trade minutes started near zero 2011 Q4 and climbed to about 125,000 by 2012 Q1, dropping quickly after 2012 Q4. That seems consistent with growing market interest in Bitcoin.
 
 Let's take a different view through a box-and-whisker lens. We'll zoom in a bit the `ggplot2` `coord_cartesian` function [@ggplot2-2] and apply a `log10` transformation to scale the data for better viewing.
 
@@ -215,7 +215,7 @@ Vol_box <- ggplot(BTC_master, aes(as.factor(Year), log10(Vol_BTC))) +
 # Customize the box plot
 Vol_box +
    #coord_cartesian(ylim = c(0, 10))+
-   labs(title = "Daily zero-trade minutes by Year", subtitle = "Over the x-axis time interval", y = "log10(Daily zero-trade minutes)", x = "Year", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")+
+   labs(title = "Bitcoin daily zero-trade minutes", subtitle = "2011-2021 by year", y = "log10(Daily zero-trade minutes)", x = "Year", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")+
   theme_minimal()
 
 ```
@@ -343,17 +343,22 @@ Yah_hist + Kag_hist
  
 ```
 
-Let's try a couple of additional plots. First, a line plot.
+Let's try a layerd line plot.
 
 ```{r}
+library(tsibble)
+BTC_line <- BTC_join |> 
+  group_by(yearquarter(Date)) |> 
+  summarise(Vol_Yah = sum(Vol_Yah),
+            Vol_BTC = sum((Vol_BTC), na.rm = TRUE)) |> 
+  rename(YrQtr = `yearquarter(Date)`)
 
-ggplot(ZeroByYQtr, aes(x = YQtr, y = Count, group=1)) +
-  geom_line(colour = "blue", linewidth = .3)+
-  geom_point(size = .3)+
+ggplot(BTC_line) +
+  geom_line(aes(x = YrQtr, y = log10(Vol_Yah), color = "#404080", linewidth = .3, group = 1))+
+  geom_line(aes(x = YrQtr, y = log10(Vol_BTC), color = "#69b3a2", linewidth = .3, group = 1))+
   theme_minimal()+
-#  scale_x_date(date_breaks = "3 months", date  _labels = "%b %y") +
   theme(axis.text.x = element_text(size = 6, angle = 40, hjust = .70), plot.caption = element_text(size = 6.5), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
-  labs(title = "Zero-trade minutes per Year/Quarter", subtitle = "Over the x-axis time interval", y = "Zero-trade minutes ", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
+  labs(title = "Bitcoin trade volumes", subtitle = "Over the x-axis time interval", y = "Trade volume", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
 
 
 ```
