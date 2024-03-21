@@ -13,9 +13,11 @@ bfd.mast
 
 ## Interpret `benford` output
 
-This output presents a lot to absorb, but we'll keep it simple. One statistic of note is the MAD (mean absolute deviation). Based on the significance thresholds proposed by Nigrini (2012), which are programmed into the benford.analysis package[@benford.analysis], the MAD of 0.001091855 suggests little overall deviation from Benford's Law, hence the "Close Conformity" rating. However, the information value of MAD and the other statistics presented is open to question for reasons explained in Chapter \@ref(context). Let's take a look at the plots, which reveal some interesting patterns.
+This output presents a lot to absorb, but we'll keep it simple. One statistic of note is the MAD (mean absolute deviation). Based on the significance thresholds proposed by [@benford2012], which are programmed into the benford.analysis package[@benford.analysis], the MAD of 0.001091855 suggests little overall deviation from Benford's Law, hence the "Close Conformity" rating. However, the information value of MAD and the other statistics presented is open to question for reasons explained in Chapter \@ref(context). Let's take a look at the plots, which reveal some interesting patterns.
 
 ## Benford plots
+
+Applying the `plot` function to the `bfd.mast` object generates a prearranged set of plots, including several that are not technically Benford. These can offer interesting insights on the data and may point an auditor toward groups of transactions that may merit further scrutiny. See further discussion below the plots.
 
 ```{r}
 
@@ -23,19 +25,25 @@ plot(bfd.mast)
 
 ```
 
-The Digits Distribution plot shows a few spikes in the 10s, 20s, and 50s. These deserve a closer look, despite the MAD "Close Conformity" rating. The Summation Distribution and Difference plots, showing big deviations from expectations across the pairs spectrum, support detailed testing of transactions, perhaps selected through PPS sampling weighted by the pair sums.
+The Digits Distribution plot shows a few spikes above Benford's Law expectations in the 10s, 20s, and 50s. These deserve a closer look, despite the MAD "Close Conformity" rating.
 
-The remaining plots are of limited usefulness. The Second Order plot, especially, is questionable because "in general, there is no relationship between accounting data and the differences between the ordered/ranked values in a data set."[^07-benford-1] The Chi-Squared Difference plot should be discounted because our Ns are so large, as explained in Chapter \@ref(context). Having reviewed the plots, it's time to drill down with some queries against `bfd.mast`.
+The Summation Distribution and Difference plots – which are not technically Benford's Law tests – appear to support detailed tests of transactions. This is because of the obvious discrepancies between the horizontal red line and the height of the bars for the digit pairs. However, interpretation these plots is complicated by lack of empirical or theoretical support for an expected distribution of sums across the pairs.
+
+No one yet knows how high each of the bars should be. Nigrini suggests further testing the bars that are highest in their neighborhoods.[^07-benford-1] Given that the summation test naturally segregates transactions into bins containing differing volumes of units (e.g., currency), the summation test seems like the perfect departure point for probability-proportional-to-size (PPS) sampling.
 
 [^07-benford-1]: Mark Nigrini, *Forensic Analytics: Methods and Techniques for Forensic Accounting Investigations*, 2e (2020), p. 92.
 
+The remaining plots are of limited usefulness. The Second Order plot is questionable because "in general, there is no relationship between accounting data and the differences between the ordered/ranked values in a data set."[^07-benford-2] The Chi-Squared Difference plot should be discounted because the sample size is so large, as explained in Chapter \@ref(context). Having reviewed the plots, it's time to drill down with some queries against `bfd.mast`.
+
+[^07-benford-2]: Nigrini (2020) at 92.
+
 ## Drill down
 
-The Benford object, `bfd.mast`, contains a wealth of additional information. Using `benford.analysis` functions, we access and comment on some of it below.
+The Benford object, `bfd.mast`, contains a wealth of additional information. Using `benford.analysis` functions, we will access and comment on some of this information below.
 
 ### Top ten suspects
 
-Here, we create a table of the top ten "suspect" *digits pairs* sorted by decreasing absolute deviation.
+Here, we create a table of the top ten "suspect" *digits pairs* sorted by decreasing absolute deviation from the frequencies predicted by Benford's Law.
 
 ```{r}
 
@@ -45,7 +53,7 @@ head(suspectsTable(bfd.mast),10)
 
 ### Get suspects
 
-Given that pairs 10 and 20 are the top two suspects, `getSuspects` with `how.many=2` retrieves all *observations*, sorted by ascending Timestamp, that begin with 10 or 20. The `head` function retrieves only the first six observations.
+Given that pairs 10 and 20 are the top two suspects, `getSuspects` with `how.many=2` retrieves all *observations* that begin with 10 or 20, sorted by ascending Timestamp. There are 325148 such transactions. The `head` function limits the output shown to only the first six.
 
 ```{r Suspect obs}
 
@@ -85,9 +93,9 @@ head(digits_50_and_99)
 
 A significant drawback of Benford's Law is the lack of objectively proven measures of conformity. What is a material departure from Benford's expectations? While Nigrini has proposed some broad thresholds, they remain largely without statistical support.
 
-One of the greatest challenges is that reliable Benford's Law readings are obtainable only with Ns (sample sizes) in the thousands. With Ns so large, traditional statistics applied to MAD values – e.g., Z scores, Chi-square, and Kolmogorov-Smirnov – throw false positives because of excess power.[^07-benford-2] In fact, MAD scores and N are so strongly correlated that the linear relationship between them can be used to estimate "expected MAD" (or EMAD), which is the portion of actual MAD attributable to chance. EMAD is a function of N as stated in Equation 2.
+One of the greatest challenges is that reliable Benford's Law readings are obtainable only with Ns (sample sizes) in the thousands. With Ns so large, traditional statistics applied to MAD values – e.g., Z scores, Chi-square, and Kolmogorov-Smirnov – throw false positives because of excess power.[^07-benford-3] In fact, MAD scores and N are so strongly correlated that the linear relationship between them can be used to estimate "expected MAD" (or EMAD), which is the portion of actual MAD attributable to chance. EMAD is a function of N as stated in Equation 2.
 
-[^07-benford-2]: See Bradley Barney & Kurt Schulzke (2016), Moderating ‘‘Cry Wolf’’ Events with Excess MAD in Benford’s Law Research and Practice, A66, A70. *J. Forensic Accounting Research*; Vol. 1 No. 1, DOI: 10.2308/jfar-51622; Mark Nigrini (2017), Audit Sampling Using Benford’s Law: A Review of the Literature with Some New Perspectives, *J. Emerging Technologies in Accounting*, Vol. 14 No. 2, pp. 30-31, 40. DOI: 10.2308/jeta-51783.
+[^07-benford-3]: See Bradley Barney & Kurt Schulzke (2016), Moderating ‘‘Cry Wolf’’ Events with Excess MAD in Benford’s Law Research and Practice, A66, A70. *J. Forensic Accounting Research*; Vol. 1 No. 1, DOI: 10.2308/jfar-51622; Mark Nigrini (2017), Audit Sampling Using Benford’s Law: A Review of the Literature with Some New Perspectives, *J. Emerging Technologies in Accounting*, Vol. 14 No. 2, pp. 30-31, 40. DOI: 10.2308/jeta-51783.
 
 `Equation 2` EMAD = 1/sqrt(158.8\*n)
 

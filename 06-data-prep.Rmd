@@ -4,7 +4,7 @@ This chapter walks through the Benford's Analysis process, from importing the da
 
 ## Load libraries
 
-To get things done in R, we must first load libraries (a.k.a. packages). These act like apps or tools for doing specific tasks like data import, cleansing, transformation, and visualization. We'll include `tictoc` compare process times for different scripting options.
+To get things done in R, we must first load libraries (a.k.a. packages). These act like apps or tools for doing specific tasks like data import, cleansing, transformation, and visualization. Some packages, e.g., `tidyverse`, [@tidyverse-2], are packages of other packages. We'll include the `tictoc` library to compare process times for different scripting options.
 
 This chunk loads the libraries. But wait! Before libraries can be *loaded* into a project using the `library` function, they must first be [installed](https://rstudio-education.github.io/hopr/packages.html#packages-1) with your R instance. This code chunk assumes that you've already installed these packages.
 
@@ -36,7 +36,7 @@ toc()
 
 #### Take a peek
 
-Like all good data analytics projects, this one surveys the data at a high level before drilling down on details.
+Like all most data analytics projects, this ADA surveys the data at a high level before drilling down on details.
 
 We can use R or [SQLite](https://www.sqlite.org/), or both, to start high-altitude validation. When we want SQL, we'll use SQLite – instead of, e.g., the excellent open-source [PostgreSQL](https://www.postgresql.org/) – because SQLite automatically spins up its own local SQL server, while other SQL dialects require creation of a separate server. We use SQL in this book to show how SQL can be taught/learned in the R Studio IDE, not because we need SQL; R can do everything we need, often better than SQL.
 
@@ -199,11 +199,13 @@ ggplot(ZeroByYQtr, aes(x = YQtr, y = Count, group=1)) +
   geom_point(size = .3)+
   theme_minimal()+
 #  scale_x_date(date_breaks = "3 months", date  _labels = "%b %y") +
-  theme(axis.text.x = element_text(size = 6, angle = 40, hjust = .70), plot.caption = element_text(size = 6.5), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
+  theme(axis.text.x = element_text(size = 6, angle = 40, hjust = .70), plot.caption = element_text(size = 8), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
   labs(title = "Zero-trade minutes per Year/Quarter", subtitle = "Over the x-axis time interval", y = "Zero-trade minutes ", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
 ```
 
-So quarterly zero minutes started near zero at the end of 2011 and climbed to year in the form of a box-and-whisker plot. We'll zoom in a bit with `ggplot2`'s `coord_cartesian` function to get more detail where most of the data located.
+So quarterly zero-trade minutes started near zero 2011 Q4 and climbed to about 125,000 by 2012 Q1, dropping quickly after 2012 Q4. That seems consistent with growing interest in Bitcoin.
+
+Let's take a different view through a box-and-whisker lens. We'll zoom in a bit the `ggplot2` `coord_cartesian` function [@ggplot2-2] and apply a `log10` transformation to scale the data for better viewing.
 
 ```{r Volume Box, message=FALSE, warning=FALSE}
 # Create box plot object
@@ -218,7 +220,9 @@ Vol_box +
 
 ```
 
-Are any Timestamp values duplicated? What is the number of distinct Timestamp values? Does it match the number of observations? SQL can answer this easily.
+The box plot reveals median consistency over time but shows lots of outliers in 2013, pointing to high volatility in minutes without trades.
+
+In a slightly different direction, it is always good practice to test for duplication problems. Are any Timestamp values duplicated? What is the number of distinct Timestamp values? Does it match the number of observations? SQL can answer this easily.
 
 ```{r}
 Timestamps <- sqldf("
