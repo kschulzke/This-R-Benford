@@ -1,6 +1,6 @@
-# Motivation
+# Wish I could use R!
 
-## I wish I could use R!
+## Bad to the freaking bone
 
 Why should accounting professors and professionals learn programming languages like SQL, and R or Python? Why not just stick with GUI[^02-motivation-1] platforms like Excel, Tableau, Idea, Power BI, MS Access, or Alteryx?
 

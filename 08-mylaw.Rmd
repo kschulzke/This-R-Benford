@@ -63,7 +63,7 @@ MyLawPlot <- ggplot(MyLaw) +
 MyLawPlot +   
   theme_minimal()+   
   theme(axis.text.x = element_text(size = 5, angle = 90, vjust = 1, hjust = 1.5)) +   
-  labs(y = "Relative frequency", x = "First two digits")
+  labs(title = "Bitcoin Trading Volumes 2018-2021", subtitle = "Actual vs Benford vs My Law Frequencies", y = "Relative frequency", x = "First two digits", caption = "Data source: Kaggle. Red = Benford's Law; Blue = 2018-2020 Actual, Green = 2021 Actual.")
 ```
 
 ## Plot diffs by pairs
@@ -77,7 +77,7 @@ ggplot(MyLaw) +
   scale_fill_gradient(low = "blue", high = "red") +   
   theme_minimal() +   
   theme(axis.text.x = element_text(size = 5, angle = 90, vjust = 0.5, hjust = 1)) +   
-  labs(y = "Difference in relative frequency", x = "First two digits")
+  labs(title = "Bitcoin Volume First-Digits Pairs Differences", subtitle = "2021 compared to 2018-2020", y = "Differences in relative frequency", x = "First two digits", caption = "Data source: Kaggle")
 ```
 
 Perhaps the biggest takeaway from this plot is how little the actual frequencies deviate from My Law. This suggests that BTC volumes have their own, non-Benford first-digits pattern.
