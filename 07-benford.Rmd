@@ -4,6 +4,49 @@
 
 We use the [benford.analysis package](https://www.rdocumentation.org/packages/benford.analysis/versions/0.1.5), running its `benford` function against the BTC_master data, producing a Benford object, which we'll call `bfd.mast`. From `bfd.mast`, we will extract information to perform a Benford analysis on the `Vol_BTC` column only. The thinking is that volumes are an indicator of market liquidity and, therefore, a measure of the reality of Bitcoin and, therefore, the viability of MSTR as a going concern.
 
+## Benford plots
+
+Applying the `plot` function to `bfd.mast` generates a prearranged set of plots, including several that are not technically Benford. These can offer interesting insights on the data and may point an auditor toward groups of observations that may merit further scrutiny. 
+
+```{r}
+plot(bfd.mast)
+```
+
+The Digits Distribution plot shows a few spikes above Benford's Law expectations in the 10s, 20s, and 50s. These deserve a closer look, despite the MAD "Close Conformity" rating. Let's zoom in with homemade visualization.
+
+```{r}
+# Extract data from bfd.mast
+KurtBfd <- data.frame(as.character(bfd.mast$bfd$digits), 
+                    bfd.mast$bfd$data.dist, 
+                    bfd.mast$bfd$benford.dist) 
+# Rename columns
+KurtBfd <- KurtBfd |> 
+  rename(Digits = as.character.bfd.mast.bfd.digits., 
+         Actual = bfd.mast.bfd.data.dist,        
+         BfdDist = bfd.mast.bfd.benford.dist)
+
+# Plot distribution
+ggplot(KurtBfd) +   
+  geom_line(aes(Digits, BfdDist), group = 1, color = "blue", linewidth = .5, linetype = 2) +     geom_bar(aes(Digits, Actual), stat = "identity", fill = "darkgreen", alpha = 0.5)+   
+  theme_minimal()+   
+  theme(axis.text.x = element_text(size = 8, angle = 90, vjust = 1, hjust = 0)) +
+  scale_x_discrete(breaks = seq(10, 90, by = 10))+
+  labs(title = "Distribution of First-Two Digits Pairs", subtitle = "Bitcoin vs. Benford: 2011-2021 ", y = "Relative frequency", x = "First two digits")
+```
+
+This more granular view brings into focus spikes on the tens, which suggests either a market-specific artefact or manipulation. Either way, the drill down on the volumes.
+
+The Summation Distribution and Difference plots – which are not technically Benford's Law tests – appear to support detailed tests of individual observations. This is because of the obvious discrepancies between the horizontal red line and the height of the digit-pair bars. However, interpretation of these plots is complicated by lack of empirical support for an expected distribution of sums across the pairs. No one yet knows how high each of the bars should be. 
+
+Nigrini suggests further testing the bars that are highest in their neighborhoods.[^07-benford-1] Given that the summation test naturally segregates observations into bins containing differing volumes of units (e.g., currency), the summation test seems a good departure point for probability-proportional-to-size (PPS) sampling.
+
+[^07-benford-1]: Mark Nigrini, *Forensic Analytics: Methods and Techniques for Forensic Accounting Investigations*, 2e (2020), p. 92.
+
+The remaining plots are of limited usefulness. The Second Order plot is questionable because "in general, there is no relationship between accounting data and the differences between the ordered/ranked values in a data set."[^07-benford-2] The Chi-Squared Difference plot should be discounted because the sample size is so large, as explained in Chapter \@ref(context). Having reviewed the plots, it's time to drill down with some queries against `bfd.mast`.
+
+[^07-benford-2]: Nigrini (2020) at 92.
+
+
 ```{r}
 
 bfd.mast <- benford(BTC_master$Vol_BTC, 2, sign="positive")  
@@ -13,29 +56,7 @@ bfd.mast
 
 ## Interpret `benford` output
 
-This output presents a lot to absorb, but we'll keep it simple. One statistic of note is the MAD (mean absolute deviation). Based on the significance thresholds proposed by [@benford2012], which are programmed into the benford.analysis package[@benford.analysis], the MAD of 0.001091855 suggests little overall deviation from Benford's Law, hence the "Close Conformity" rating. However, the information value of MAD and the other statistics presented is open to question for reasons explained in Chapter \@ref(context). Let's take a look at the plots, which reveal some interesting patterns.
-
-## Benford plots
-
-Applying the `plot` function to the `bfd.mast` object generates a prearranged set of plots, including several that are not technically Benford. These can offer interesting insights on the data and may point an auditor toward groups of transactions that may merit further scrutiny. See further discussion below the plots.
-
-```{r}
-
-plot(bfd.mast)
-
-```
-
-The Digits Distribution plot shows a few spikes above Benford's Law expectations in the 10s, 20s, and 50s. These deserve a closer look, despite the MAD "Close Conformity" rating.
-
-The Summation Distribution and Difference plots – which are not technically Benford's Law tests – appear to support detailed tests of transactions. This is because of the obvious discrepancies between the horizontal red line and the height of the bars for the digit pairs. However, interpretation these plots is complicated by lack of empirical or theoretical support for an expected distribution of sums across the pairs.
-
-No one yet knows how high each of the bars should be. Nigrini suggests further testing the bars that are highest in their neighborhoods.[^07-benford-1] Given that the summation test naturally segregates transactions into bins containing differing volumes of units (e.g., currency), the summation test seems like the perfect departure point for probability-proportional-to-size (PPS) sampling.
-
-[^07-benford-1]: Mark Nigrini, *Forensic Analytics: Methods and Techniques for Forensic Accounting Investigations*, 2e (2020), p. 92.
-
-The remaining plots are of limited usefulness. The Second Order plot is questionable because "in general, there is no relationship between accounting data and the differences between the ordered/ranked values in a data set."[^07-benford-2] The Chi-Squared Difference plot should be discounted because the sample size is so large, as explained in Chapter \@ref(context). Having reviewed the plots, it's time to drill down with some queries against `bfd.mast`.
-
-[^07-benford-2]: Nigrini (2020) at 92.
+This output presents a lot to absorb, but we'll keep it simple. One statistic of note is the MAD (mean absolute deviation). Based on the significance thresholds proposed by [@benford2012], which are programmed into the benford.analysis package[@benford.analysis], the MAD of 0.001091855 suggests little overall deviation from Benford's Law, hence the "Close Conformity" rating. However, the information value of MAD and the other statistics presented is open to question for reasons explained in Chapter \@ref(context). he plots, which reveal some interesting patterns.
 
 ## Drill down
 
@@ -53,7 +74,7 @@ head(suspectsTable(bfd.mast),10)
 
 ### Get suspects
 
-Given that pairs 10 and 20 are the top two suspects, `getSuspects` with `how.many=2` retrieves all *observations* that begin with 10 or 20, sorted by ascending Timestamp. There are 325148 such transactions. The `head` function limits the output shown to only the first six.
+Given that pairs 10 and 20 are the top two suspects, `getSuspects` with `how.many=2` retrieves all *observations* that begin with 10 or 20, sorted by ascending Timestamp. There are 325148 such observations. The `head` function limits the output shown to only the first six.
 
 ```{r Suspect obs}
 
@@ -112,11 +133,11 @@ ExcessMAD <- bfd.mast$MAD - EMAD
 bfd.mast$MAD 
 EMAD 
 ExcessMAD
-
+ExcessMAD/bfd.mast$MAD
 ```
 
-Unfortunately, as with MAD itself, how much Excess MAD is "too much" is still speculative. However, zero Excess MAD is definitively too little to raise an alarm over manipulated data.
+So ExcessMAD is a very small positive number positive number, approximately equal to MAD. Unfortunately, as with MAD itself, how much Excess MAD is "too much" remains speculative. However, we can say that zero Excess MAD is definitively too little to raise an alarm over manipulated data. 
 
 ## Benford's Law Conclusion
 
-This Benford analysis has focused exclusively on Bitcoin transaction volumes, as presented in the Kaggle data set.
+This Benford analysis focused exclusively on 4857377 per-minute purported Bitcoin transaction volume values drawn from a Kaggle data set said to cover the 2011 Q4 - 2021 Q1 period. The tables and visualizations produced

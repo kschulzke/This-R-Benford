@@ -24,7 +24,9 @@ Preparation tasks will include importing the data into R Studio, performing some
 
 After downloading the [Bitcoin Historical Data](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data) from Kaggle, we import it into R Studio using the `data.table` package[@data.table] `fread` function, which works much faster on tables containing millions of rows. We could use the `dplyr` package[@dplyr] `read_csv` function, which still effective but considerably slower. We'll assign the data to an object called BTC_master.
 
-In the script that follows, the `<-` symbol is the "assignment operator," which assigns the contents of BTC_data.csv to the R object "BTC_master". We use `tic` and `toc` to measure execution speed. The speed varies with the hardware (e.g., RAM and CPU specs) and other demands on it.
+In the script that follows, the `<-` symbol is the "assignment operator," which assigns the contents of an object or function to another. Example: In the following chunk, we assign the results of `fread("BTC_data.csv")` to an object arbitrarily named `BTC_master`. 
+
+We use `tic` and `toc` to measure execution speed. The speed varies with the hardware (e.g., RAM and CPU specs) and other demands on it.
 
 ```{r freed BTC data}
 tic()
@@ -130,8 +132,10 @@ A few transformations will help with further validation. Transformation can mean
 
 Do the zero-trade minutes follow a temporal pattern? We'll first need to convert the Timestamp column to Date format so that we can group by time periods, like years, quarters, or months. Before we do that, let's drop some columns – here, by selecting just the columns we need – to speed processing. While we're at it, let's streamline the volume and price column names.
 
+We use the pipe operator `|>` to pass or "pipe" data or results to a subsequent function, e.g., `BTC_master |> select` passes `BTC_master` into a `select` function that chooses only the columns named in the function call.   
+
 ```{r}
-BTC_master <- BTC_master %>% 
+BTC_master <- BTC_master |>  
   select (Timestamp, Close, `Volume_(BTC)`, `Volume_(Currency)`, Weighted_Price) |> 
   rename(Vol_BTC = `Volume_(BTC)`, Vol_Curr = `Volume_(Currency)`, Wt_Price = Weighted_Price)
 head(BTC_master)
@@ -343,10 +347,12 @@ Yah_hist + Kag_hist
  
 ```
 
-Let's try a layerd line plot.
 
-```{r}
+```{r Experimental line plot, eval=FALSE, include=FALSE}
+# Experimental plot
+
 library(tsibble)
+
 BTC_line <- BTC_join |> 
   group_by(yearquarter(Date)) |> 
   summarise(Vol_Yah = sum(Vol_Yah),
@@ -354,13 +360,11 @@ BTC_line <- BTC_join |>
   rename(YrQtr = `yearquarter(Date)`)
 
 ggplot(BTC_line) +
-  geom_line(aes(x = YrQtr, y = log10(Vol_Yah), color = "#404080", linewidth = .3, group = 1))+
-  geom_line(aes(x = YrQtr, y = log10(Vol_BTC), color = "#69b3a2", linewidth = .3, group = 1))+
+  geom_line(aes(x = YrQtr, y = log10(Vol_Yah), color = "blue", linewidth = .3, group = 1))+
+  #geom_line(aes(x = YrQtr, y = log10(Vol_BTC), color = "red", linewidth = .3, group = 1))+
   theme_minimal()+
   theme(axis.text.x = element_text(size = 6, angle = 40, hjust = .70), plot.caption = element_text(size = 6.5), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
   labs(title = "Bitcoin trade volumes", subtitle = "Over the x-axis time interval", y = "Trade volume", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
-
-
 ```
 
 #### My Law Transforms
@@ -371,8 +375,7 @@ To combine 2018-2020, we can filter *into* the combined object ("BTC_18_20") onl
 
 In addition, because Benford analyses typically focus on positive and negative numbers separately, we want to filter out negative numbers, if any. It's also important to have sufficient digits to distinguish patterns in first digits, so we should filter out values less than 10. We can execute all of these filters with one code chunk.
 
-```{r Benford filters, warning=FALSE}
-
+```{r}
 BTC_18_20 <- sqldf("
   
 SELECT Timestamp, Year, Vol_BTC
