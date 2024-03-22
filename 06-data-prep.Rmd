@@ -24,7 +24,7 @@ Preparation tasks will include importing the data into R Studio, performing some
 
 After downloading the [Bitcoin Historical Data](https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data) from Kaggle, we import it into R Studio using the `data.table` package[@data.table] `fread` function, which works much faster on tables containing millions of rows. We could use the `dplyr` package[@dplyr] `read_csv` function, which still effective but considerably slower. We'll assign the data to an object called BTC_master.
 
-In the script that follows, the `<-` symbol is the "assignment operator," which assigns the contents of an object or function to another. Example: In the following chunk, we assign the results of `fread("BTC_data.csv")` to an object arbitrarily named `BTC_master`. 
+In the script that follows, the `<-` symbol is the "assignment operator," which assigns the contents of an object or function to another. Example: In the following chunk, we assign the results of `fread("BTC_data.csv")` to an object arbitrarily named `BTC_master`.
 
 We use `tic` and `toc` to measure execution speed. The speed varies with the hardware (e.g., RAM and CPU specs) and other demands on it.
 
@@ -132,7 +132,7 @@ A few transformations will help with further validation. Transformation can mean
 
 Do the zero-trade minutes follow a temporal pattern? We'll first need to convert the Timestamp column to Date format so that we can group by time periods, like years, quarters, or months. Before we do that, let's drop some columns – here, by selecting just the columns we need – to speed processing. While we're at it, let's streamline the volume and price column names.
 
-We use the pipe operator `|>` to pass or "pipe" data or results to a subsequent function, e.g., `BTC_master |> select` passes `BTC_master` into a `select` function that chooses only the columns named in the function call.   
+We use the pipe operator `|>` to pass or "pipe" data or results to a subsequent function, e.g., `BTC_master |> select` passes `BTC_master` into a `select` function that chooses only the columns named in the function call.
 
 ```{r}
 BTC_master <- BTC_master |>  
@@ -200,11 +200,9 @@ Let's visualize the zeroes by YQtr, first with a line plot.
 
 ggplot(ZeroByYQtr, aes(x = YQtr, y = Count, group=1)) +
   geom_line(colour = "blue", linewidth = 1)+
-  geom_point(size = .3)+
   theme_minimal()+
-#  scale_x_date(date_breaks = "3 months", date  _labels = "%b %y") +
-  theme(axis.text.x = element_text(size = 6, angle = 40, hjust = .70), plot.caption = element_text(size = 8), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
-  labs(title = "Bitcoin zero-trade minutes", subtitle = "2011-2021 per year/quarter", y = "Zero-trade minutes ", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
+  theme(axis.text.x = element_text(size = 8, angle = 30, hjust = .70), plot.caption = element_text(size = 8), plot.tag = element_text(size = 9), plot.margin = margin(.3, .3, .3, .3, "cm")) +
+  labs(title = "Bitcoin zero-trade minutes", subtitle = "2011-2021 by quarter", y = "Zero-trade minutes ", x = "Year and Quarter", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")
 ```
 
 So quarterly zero-trade minutes started near zero 2011 Q4 and climbed to about 125,000 by 2012 Q1, dropping quickly after 2012 Q4. That seems consistent with growing market interest in Bitcoin.
@@ -218,7 +216,7 @@ Vol_box <- ggplot(BTC_master, aes(as.factor(Year), log10(Vol_BTC))) +
 
 # Customize the box plot
 Vol_box +
-   #coord_cartesian(ylim = c(0, 10))+
+   coord_cartesian(ylim = c(-4, 4))+
    labs(title = "Bitcoin daily zero-trade minutes", subtitle = "2011-2021 by year", y = "log10(Daily zero-trade minutes)", x = "Year", caption = "Source: Kaggle, https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data.")+
   theme_minimal()
 
@@ -316,6 +314,8 @@ toc()
 
 In SQL? For another day!
 
+##### Visualizations
+
 But let's use the combined table in some visualizations. We can start with overlaid histograms, using a log10 transformation to make the distributions standout regardless of scale.
 
 ```{r message=FALSE, warning=FALSE}
@@ -353,7 +353,7 @@ Kag_hist + Yah_hist
  
 ```
 
-Now, let's run a succession of dot plots (`geom_point`) to learn more about the Kaggle-Yahoo relationship. 
+Now, let's run a succession of dot plots (`geom_point`) to learn more about the Kaggle-Yahoo relationship.
 
 ```{r message=FALSE, warning=FALSE}
 Vol_point1 <-  filter(BTC_join, Date < "2021-04-01") |> 
@@ -389,6 +389,7 @@ Vol_point4 <- Vol_point3 +
     coord_cartesian(xlim = c(2.75,5.25))
 Vol_point4
 ```
+
 Finally, we'll add a `facet_wrap` with two columns of plots.
 
 ```{r message=FALSE, warning=FALSE}
@@ -403,7 +404,7 @@ Vol_point1 + Vol_point2 + Vol_point3 + Vol_point4
 
 ```
 
-Each plots adds a bit more to our understanding of the data relationship. Clearly, Kaggle and Yahoo offer two very different takes on Bitcoin traditing volume.
+Each plot adds a bit more to our understanding of the data relationship. Clearly, Kaggle and Yahoo offer two very different takes on Bitcoin traditing volume.
 
 ```{r Experimental line plot, eval=FALSE, include=FALSE}
 # Experimental plot
