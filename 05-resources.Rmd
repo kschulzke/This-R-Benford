@@ -14,7 +14,7 @@ I am typing these words into an [Rmarkdown](https://rmarkdown.rstudio.com/) (.Rm
 
 R and R Studio can be accessed through a free or low-cost account at [Posit.Cloud](https://posit.cloud/). Alternatively, they can be [locally installed on a laptop](https://rstudio-education.github.io/hopr/starting.html). Consistent with its open-source roots, R is OS-agnostic; it works equally well on MacOS, Windows, and Linux. It's not currently feasible to use R Studio on a smartphone. Too much analytical power for such an "itty bitty living space"!
 
-## Resources
+## Ecosystem
 
 The R ecosystem is broad, deep and mostly open-source. R democratizes data analysis, making sophisticated tools and techniques available to smaller colleges and universities, smaller firms, and even solo practitioners.
 

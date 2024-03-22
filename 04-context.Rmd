@@ -38,7 +38,7 @@ For example, the expected frequency of 41 in first position approximates 0.01046
 log10(1 + 1/41)
 ```
 
-Given a large enough "sample size" (referred to as "N"), Benford's Law can help in assessing the plausibility of a column of data. The word "sample" is, however, not quite accurate here because Benford's Law is typically applied to the entire set of numbers, not a sample thereof. The expected frequencies of all 89 first-two digit pairs are visualized in the bar chart below.
+Given a large enough "sample size" (referred to as "N"), Benford's Law can help in assessing the plausibility of a column of data. The word "sample" is, however, not quite accurate here because Benford's Law is typically applied to the entire set of numbers, not a sample thereof. The expected frequencies of all 90 first-two digit pairs are visualized in the bar chart below.
 
 ```{r echo=FALSE}
 library(ggplot2)
@@ -49,7 +49,7 @@ BfdLawSub <- data.frame(as.character(BfdLaw$bfd$digits),
                      BfdLaw$bfd$benford.dist)
 
 BfdPlot <- ggplot(BfdLawSub) +   
-  geom_bar(aes(as.character.BfdLaw.bfd.digits., BfdLaw.bfd.benford.dist), stat = "identity", fill = "#00CED1", alpha = 0.5) + #https://www.rapidtables.com/web/color/RGB_Color.html
+  geom_bar(aes(as.character.BfdLaw.bfd.digits., BfdLaw.bfd.benford.dist), stat = "identity", fill = "#0000CC", alpha = 0.5) + #https://www.rapidtables.com/web/color/RGB_Color.html
    labs(title = "Benford's Law", subtitle = "Predicted relative frequencies of first-digits pairs", y = "Predicted Relative Frequency", x = "First two digits") +
   theme_minimal()+   
   theme(axis.text.x = element_text(size = 6, angle = 90, vjust = 1, hjust = 1.5))

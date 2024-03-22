@@ -361,7 +361,7 @@ Vol_point1 <-  filter(BTC_join, Date < "2021-04-01") |>
     geom_point(aes(log10(Vol_BTC), log10(Vol_Yah)), size = 2, shape = 1, color = 	"#0000FF")+
     theme_minimal() +
     theme(axis.text.x = element_text(size = 8, vjust = 1, hjust = 0)) +
-    labs(title = "Bitcoin Daily Trading Volumes: Kaggle vs. Yahoo", subtitle = "9-17-2014 to 3-31-2021", y = "log10(Yahoo Volume)", x = "log10(Kaggle Volume)", caption = "Data source: Kaggle.com, Yahoo.com")
+    labs(title = "Bitcoin Daily Trading Volumes: Kaggle vs. Yahoo", subtitle = "From 9-17-2014 to 3-31-2021", y = "log10(Yahoo Volume)", x = "log10(Kaggle Volume)", caption = "Data source: Kaggle.com, Yahoo.com")
 
 Vol_point1
 ```
