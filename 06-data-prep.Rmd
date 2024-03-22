@@ -244,11 +244,13 @@ This confirms zero duplicated Timestamp values, as the count, 4857377, equals th
 How many values should we find in the table, assuming a row for every minute over the entire time period covered? Is BTC_master missing any minutes? Let's use R to find out. First, we'll calculate the number of minutes between the first and last rows in the table. We'll apply the `lubridate` [@lubridate]`time_length` function to the posixt column because it states dates and times in Unix format. Date won't work because it contains only the dates.
 
 ```{r}
-Minutes <- time_length(interval(min(BTC_master$posixt), max(BTC_master$posixt)), "minute")
+library(lubridate)
+
+Minutes <- -time_length(min(BTC_master$posixt) - max(BTC_master$posixt), "minute")
 Minutes
 ```
 
-So the entire interval contains 4863848 minutes. But BTC_master has only 4857377 rows, for a difference of 6471.
+So the entire data interval contains 4863848 minutes. But BTC_master has only 4857377 rows, for a difference of 6471:
 
 ```{r}
 Minutes - Timestamps
@@ -303,7 +305,9 @@ BTC_join <- BTC_master |>
   select(Date, Vol_BTC, Vol_Curr, Wt_Price) |>
   filter(Date > '2014-9-16') |> 
   group_by(Date) |> 
-  summarise(Vol_BTC = sum(Vol_BTC), Vol_Curr = sum(Vol_Curr), Wt_Price = mean(Wt_Price)) |>   right_join(BTC_Yah, join_by(Date == Date))
+  summarise(Vol_BTC = sum(Vol_BTC), Vol_Curr = sum(Vol_Curr), Wt_Price =  mean(Wt_Price)) |>   
+  right_join(BTC_Yah, join_by(Date == Date)) |> 
+  mutate(Year = as.character(year(Date)))
 
 head(BTC_join)
 
@@ -316,37 +320,65 @@ But let's use the combined table in some visualizations. We can start with overl
 
 ```{r message=FALSE, warning=FALSE}
 
-Vol_hist<-  BTC_join |> 
-    ggplot(aescolor="#e9ecef", alpha=0.8, position = 'identity') +
-    geom_histogram(aes(log10(Vol_Yah)), fill = "#404080", bins = 50, alpha = .8) +
-    geom_histogram(aes(log10(Vol_BTC)), fill= "#69b3a2", bins = 50, alpha = .8) +
-    #coord_cartesian(xlim = c(0, 1e11))+ (zoom layer)
-    theme_minimal() 
+Vol_hist<-  filter(BTC_join, Date < "2021-04-01") |> 
+    ggplot(aescolor="#e9ecef", alpha=0.6, position = 'identity') +
+    geom_histogram(aes(log10(Vol_Yah)), fill = "#404080", bins = 40, alpha = .8) +
+    geom_histogram(aes(log10(Vol_BTC)), fill= "#69b3a2", bins = 40, alpha = .8) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(size = 8, vjust = 1, hjust = 0))+
+  labs(title = "Bitcoin Daily Volumes: Kaggle vs. Yahoo", subtitle = "9-17-2014 to 3-31-2021", y = "Count", x = "log10(trading volume)")
 Vol_hist  
 
 ```
 
-Not exactly overlaid, are they? This is because the Kaggle and Yahoo "volume" distributions are so dissimilar. Hmm. This raises questions about the reliability and relevance of the data. Why are the data sets so different? Here's a slightly different coding approach, separately the two histograms into two separate plots.
+Not exactly overlaid, are they? The Kaggle and Yahoo "volume" distributions over teh same period are dramatically different. Why? This raises questions about the reliability and relevance of the data.
 
-```{r message=FALSE, warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+#Slightly different coding approach, creating two separate histograms.
+
 library(patchwork)
 
-Kag_hist <-  BTC_join |> 
+Kag_hist <-  filter(BTC_join, Date < "2021-04-01") |> 
     ggplot(aescolor="#e9ecef", alpha=0.6, position = 'identity') +
     geom_histogram(aes(log10(Vol_BTC)), fill = "#69b3a2", bins = 40) +
-    #coord_cartesian(xlim = c(0,9))+ (zoom layer)
     theme_minimal()
 
-Yah_hist <-  BTC_join |> 
+Yah_hist <-  filter(BTC_join, Date < "2021-04-01") |> 
     ggplot(aescolor="#e9ecef", alpha=0.6, position = 'identity') +
     geom_histogram(aes(log10(Vol_Yah)), fill = "#404080", bins = 40) +
-    #coord_cartesian(xlim = c(0,9))+ (zoom layer)
     theme_minimal()
 
-Yah_hist + Kag_hist
+Kag_hist + Yah_hist
  
 ```
 
+Now, let's run a succession of dot plots (`geom_point`) to learn more about the Kaggle-Yahoo relationship. 
+
+```{r message=FALSE, warning=FALSE}
+Vol_point1 <-  filter(BTC_join, Date < "2021-04-01") |> 
+    ggplot() +
+    geom_point(aes(log10(Vol_BTC), log10(Vol_Yah)), size = 2, shape = 1, color = 	"#0000FF")+
+    theme_minimal() +
+    theme(axis.text.x = element_text(size = 8, vjust = 1, hjust = 0)) +
+    labs(title = "Bitcoin Daily Trading Volumes: Kaggle vs. Yahoo", subtitle = "9-17-2014 to 3-31-2021", y = "log10(Yahoo Volume)", x = "log10(Kaggle Volume)", caption = "Data source: Kaggle.com, Yahoo.com")
+
+Vol_point2 <- Vol_point1 +
+    geom_point(aes(log10(Vol_BTC), log10(Vol_Yah), color = Year), size = 2, shape = 1) 
+
+Vol_point3 <- Vol_point2 +
+   geom_smooth(aes(log10(Vol_BTC), log10(Vol_Yah), color = Year))
+
+Vol_point4 <- Vol_point3 +
+    coord_cartesian(xlim = c(2.75,5.25))
+
+# Print all three plots
+Vol_point1 
+Vol_point2
+Vol_point3
+Vol_point4
+
+```
 
 ```{r Experimental line plot, eval=FALSE, include=FALSE}
 # Experimental plot
@@ -380,15 +412,16 @@ BTC_18_20 <- sqldf("
   
 SELECT Timestamp, Year, Vol_BTC
 FROM BTC_master
-WHERE (Year IN (2018, 2019, 2020) and Vol_BTC >= 10)
+WHERE (Year IN (2018, 2019, 2020) and Vol_BTC >= 10);
 
 ")
+
 
 BTC_21 <- sqldf("
   
 SELECT Timestamp, Year, Vol_BTC
 FROM BTC_master
-WHERE (Year = 2021 and Vol_BTC >= 10)
+WHERE (Year = 2021 and Vol_BTC >= 10);
 
 ")
 
