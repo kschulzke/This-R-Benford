@@ -363,22 +363,47 @@ Vol_point1 <-  filter(BTC_join, Date < "2021-04-01") |>
     theme(axis.text.x = element_text(size = 8, vjust = 1, hjust = 0)) +
     labs(title = "Bitcoin Daily Trading Volumes: Kaggle vs. Yahoo", subtitle = "9-17-2014 to 3-31-2021", y = "log10(Yahoo Volume)", x = "log10(Kaggle Volume)", caption = "Data source: Kaggle.com, Yahoo.com")
 
-Vol_point2 <- Vol_point1 +
-    geom_point(aes(log10(Vol_BTC), log10(Vol_Yah), color = Year), size = 2, shape = 1) 
+Vol_point1
+```
 
+Let's add `color = Year`.
+
+```{r message=FALSE, warning=FALSE}
+Vol_point2 <- Vol_point1 +
+    geom_point(aes(log10(Vol_BTC), log10(Vol_Yah), color = Year), size = 2, shape = 1)
+Vol_point2
+```
+
+And, now, a color-coded smooth regression line with `geom_smooth`.
+
+```{r message=FALSE, warning=FALSE}
 Vol_point3 <- Vol_point2 +
    geom_smooth(aes(log10(Vol_BTC), log10(Vol_Yah), color = Year))
+Vol_point3
+```
 
+Finally, let's zoom in using `coord_cartesian`.
+
+```{r message=FALSE, warning=FALSE}
 Vol_point4 <- Vol_point3 +
     coord_cartesian(xlim = c(2.75,5.25))
-
-# Print all three plots
-Vol_point1 
-Vol_point2
-Vol_point3
 Vol_point4
+```
+Finally, we'll add a `facet_wrap` with two columns of plots.
+
+```{r message=FALSE, warning=FALSE}
+Vol_point5 <- Vol_point4 +
+    facet_wrap(~Year, ncol = 2)
+Vol_point5
+```
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+# Here, we'll use the patchwork library to print the plots together.
+Vol_point1 + Vol_point2 + Vol_point3 + Vol_point4
 
 ```
+
+Each plots adds a bit more to our understanding of the data relationship. Clearly, Kaggle and Yahoo offer two very different takes on Bitcoin traditing volume.
 
 ```{r Experimental line plot, eval=FALSE, include=FALSE}
 # Experimental plot

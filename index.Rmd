@@ -1,0 +1,35 @@
+---
+title: "This R Benford"
+author: "Kurt Schulzke"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: |
+  This is a minimal example of using R to teach SQL, Benford's Law, and PPS sampling.
+link-citations: yes
+github-repo: https://github.com/kschulzke/This-R-Benford.git
+---
+
+# About
+
+This book illustrates the use of R Studio for performing audit data analytics with Benford's Law, SQL, and PPS sampling.
+
+![](images/clipboard-3066577841.png)
+
+```{r eval=FALSE, include=FALSE}
+bookdown::render_book()
+```
+
+```{r eval=FALSE, include=FALSE}
+bookdown::serve_book()
+```
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```

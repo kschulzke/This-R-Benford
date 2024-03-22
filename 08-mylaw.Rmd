@@ -77,7 +77,7 @@ MyLawDiffsPLot <- ggplot(MyLaw) +
   scale_fill_gradient(low = "blue", high = "red") +   
   theme_minimal() +   
   theme(axis.text.x = element_text(size = 5, angle = 90, vjust = 0.5, hjust = 1)) +   
-  labs(title = "Bitcoin Volume First-Digits Pairs Differences", subtitle = "2021 compared to 2018-2020", y = "Differences in relative frequency", x = "First two digits", caption = "Data source: Kaggle")
+  labs(title = "Bitcoin Volume First-Digits Pairs Differences", subtitle = "2021 Actual vs My Law (2018-2020)", y = "Differences in relative frequency", x = "First two digits", caption = "Data source: Kaggle & Yahoo")
 
 MyLawDiffsPLot
 ```
@@ -96,3 +96,9 @@ MyLawMAD
 ## My Law Conclusion
 
 The apparent conformity to My Law justifies little concern over potential number manipulation, unless we assume that the data were deliberately fabricated to conform to My Law frequencies. There is little evidence to suggest any such fabrication.
+
+
+```{r}
+
+```
+
