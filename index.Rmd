@@ -1,6 +1,6 @@
 ---
 title: "This R Benford"
-author: "Kurt Schulzke"
+author: "Kurt S. Schulzke"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
