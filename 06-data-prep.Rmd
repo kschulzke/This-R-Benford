@@ -28,7 +28,7 @@ In the script that follows, the `<-` symbol is the "assignment operator," which 
 
 We use `tic` and `toc` to measure execution speed. The speed varies with the hardware (e.g., RAM and CPU specs) and other demands on it.
 
-```{r freed BTC data}
+```{r fread BTC data}
 tic()
 BTC_master <- fread("BTC_data.csv")  
 toc()
@@ -80,7 +80,7 @@ summary(BTC_master)
 We see 1243608 "NaN" values in all columns except Timestamp. This is consistent with the data source's statement that "NaN" signifies minutes with zero trading activity. We could also count the NaNs for a single column – like Open – using the `count` function. SQLite chokes on NaN values, so we'll use R.
 
 ```{r}
-BTC_master %>% 
+BTC_master |> 
   count(is.nan(Open))
 ```
 
@@ -153,33 +153,33 @@ tail(BTC_master$Date)
 
 ```
 
-Now, we can create Year, Qtr, and YQtr columns:
+Now, we can create Year and YQtr columns:
 
 ```{r}
+
+library(tsibble)
 BTC_master$Year <- year(BTC_master$Date)
-BTC_master$Qtr <- quarter(BTC_master$Date)
-BTC_master$YQtr <- paste0(year(BTC_master$Date),
-                             "/0",
-                             quarter(BTC_master$Date))
+BTC_master$YQtr <- yearquarter(BTC_master$Date)
+
 ```
 
 Now, let's get zeroes by YQtr. First, SQL, then R. Note the difference in processing times, at least in this environment.
 
 ```{r}
 
-# SQLite
-
-tic()
-ZeroByYQtrS <- sqldf("
-      
-SELECT YQtr, count(Close) as Count
-FROM BTC_master
-WHERE Close = 0
-GROUP BY YQtr
-      
-      ")
-head(ZeroByYQtrS)
-toc()
+# SQLite chokes on YQtr from tsibble
+# 
+# tic()
+# ZeroByYQtrS <- sqldf("
+#       
+# SELECT YQtr, count(Close) as Count
+# FROM BTC_master
+# WHERE Close = 0
+# GROUP BY YQtr
+#       
+#       ")
+# head(ZeroByYQtrS)
+# toc()
 
 # R dplyr package
 
