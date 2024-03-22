@@ -239,7 +239,7 @@ Timestamps
 
 This confirms zero duplicated Timestamp values, as the count, 4857377, equals the number of rows in BTC_master.
 
-How many values should we find in the table, assuming a row for every minute over the entire time period covered? Is BTC_master missing any minutes? Let's use R to find out. First, we'll calculate the number of minutes between the first and last rows in the table. We'll apply the `lubridate` [@lubridate]`time_length` function to the posixt column because it states dates and times in Unix format. Date won't work because it contains only the dates.
+How many per-minute rows should we find in the table, assuming one row for every minute between 12-31-2011 and 3-31-2021? Is BTC_master missing any minutes? Let's use R to find out. First, we'll calculate the number of minutes between the first and last rows in the table. We'll apply the `lubridate` [@lubridate]`time_length` function to the `posixt` column because it includes dates and times in Unix format. `Date` won't work because it contains only the dates.
 
 ```{r}
 library(lubridate)
